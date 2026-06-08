@@ -54,7 +54,7 @@ const Home = () => {
   return (
     <>
       <main>
-        <section id="home" className="relative min-h-screen flex items-center pt-24 pb-8 overflow-hidden">
+        <section id="home" className="relative min-h-[90vh] flex items-center pt-16 pb-6 overflow-hidden scroll-mt-20">
           <div className="absolute inset-0 z-0 flex justify-end">
             <div className="w-full md:w-2/3 h-full relative">
               <img
@@ -97,7 +97,7 @@ const Home = () => {
                 <a href="#products" className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-primary/20 text-primary bg-surface/50 hover:bg-surface transition-colors duration-300 font-label-md">Shop the Collection</a>
               </div>
 
-              <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-outline-variant/30 pt-6">
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-outline-variant/30 pt-4">
                 <div className="flex flex-col gap-2 gsap-trust">
                   <span className="material-symbols-outlined text-[#006D77] text-2xl">
                     biotech
@@ -134,7 +134,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="lg:col-span-6 h-[400px] lg:h-[550px] xl:h-[600px] relative mt-8 lg:mt-0 glass-layer rounded-2xl overflow-hidden soft-glow gsap-reveal">
+            <div className="lg:col-span-6 h-[350px] lg:h-[450px] xl:h-[500px] relative mt-6 lg:mt-0 glass-layer rounded-2xl overflow-hidden soft-glow gsap-reveal">
               <div className="absolute top-4 left-4 z-20 bg-white/80 px-4 py-2 rounded-full shadow-sm text-xs font-label-md text-[#006D77] flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#83C5BE] animate-pulse"></span>
                 Interactive View
