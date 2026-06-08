@@ -6,6 +6,22 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+    useEffect(() => {
+    let ctx = gsap.context(() => {
+      gsap.from(".reveal-element", {
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top 75%",
+        },
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: "power3.out"
+      });
+    });
+    return () => ctx.revert();
+  }, []);
   return (
     <>
       

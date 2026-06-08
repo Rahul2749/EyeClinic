@@ -9,6 +9,48 @@ import About from "./About";
 gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
+    useEffect(() => {
+    let ctx = gsap.context(() => {
+      gsap.from(".gsap-headline-line", {
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.2,
+        ease: "power4.out",
+        delay: 0.2
+      });
+      gsap.from(".gsap-subhead", {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+        delay: 0.8
+      });
+      gsap.from(".gsap-cta", {
+        scale: 0.9,
+        opacity: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        delay: 1.2
+      });
+      gsap.from(".gsap-trust", {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power2.out",
+        delay: 1.4
+      });
+      gsap.from(".gsap-reveal", {
+        x: 100,
+        opacity: 0,
+        duration: 1.5,
+        ease: "power4.out",
+        delay: 0.5
+      });
+    });
+    return () => ctx.revert();
+  }, []);
   return (
     <>
       <main>

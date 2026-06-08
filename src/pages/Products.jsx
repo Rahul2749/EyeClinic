@@ -6,6 +6,22 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const Products = () => {
+    useEffect(() => {
+    let ctx = gsap.context(() => {
+      gsap.from(".product-card", {
+        scrollTrigger: {
+          trigger: "#product-grid",
+          start: "top 80%",
+        },
+        y: 60,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out"
+      });
+    });
+    return () => ctx.revert();
+  }, []);
   return (
     <>
       <div id="products" className="max-w-container-max mx-auto scroll-mt-24">

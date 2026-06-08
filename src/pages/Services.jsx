@@ -6,6 +6,22 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const Services = () => {
+    useEffect(() => {
+    let ctx = gsap.context(() => {
+      gsap.from(".service-card", {
+        scrollTrigger: {
+          trigger: "#services",
+          start: "top 70%",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out"
+      });
+    });
+    return () => ctx.revert();
+  }, []);
   return (
     <>
       
