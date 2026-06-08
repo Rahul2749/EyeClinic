@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Products = () => {
   return (
     <>
-      <div id="products" className="max-w-container-max mx-auto pt-24 -mt-24">
+      <div id="products" className="max-w-container-max mx-auto scroll-mt-24">
         
 
         <section className="px-margin-mobile md:px-margin-desktop mb-lg md:mb-lg flex flex-col md:flex-row justify-between items-center gap-md">

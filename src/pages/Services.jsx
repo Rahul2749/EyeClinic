@@ -14,7 +14,7 @@ const Services = () => {
         
 
         <section
-          className="px-margin-mobile md:px-margin-desktop py-lg md:py-lg bg-surface-bright pt-24 -mt-24"
+          className="px-margin-mobile md:px-margin-desktop py-lg md:py-lg bg-surface-bright scroll-mt-24"
           id="services"
         >
           <div className="max-w-container-max mx-auto">

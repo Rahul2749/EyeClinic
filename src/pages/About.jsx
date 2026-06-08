@@ -10,7 +10,7 @@ const About = () => {
     <>
       
 
-      <div id="about" className="section-container pt-24 -mt-24">
+      <div id="about" className="section-container scroll-mt-24">
         
 
         <section className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-lg overflow-hidden">
