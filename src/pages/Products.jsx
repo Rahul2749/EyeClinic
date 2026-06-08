@@ -11,7 +11,7 @@ const Products = () => {
       <div id="products" className="max-w-container-max mx-auto pt-24 -mt-24">
         
 
-        <section className="px-margin-mobile md:px-margin-desktop mb-lg md:mb-xl flex flex-col md:flex-row justify-between items-center gap-md">
+        <section className="px-margin-mobile md:px-margin-desktop mb-lg md:mb-lg flex flex-col md:flex-row justify-between items-center gap-md">
           <div className="w-full md:w-auto overflow-x-auto no-scrollbar pb-xs -mb-xs">
             <div className="flex space-x-sm min-w-max" id="category-filters">
               <button
@@ -59,7 +59,7 @@ const Products = () => {
           </div>
         </section>
 
-        <section className="px-margin-mobile md:px-margin-desktop mb-xl">
+        <section className="px-margin-mobile md:px-margin-desktop mb-lg">
           <div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter"
             id="product-grid"
@@ -182,7 +182,7 @@ const Products = () => {
               </div>
             </div>
           </div>
-          <div className="mt-lg flex justify-center">
+          <div className="mt-md flex justify-center">
             <button className="px-lg py-sm rounded-full border border-primary text-primary hover:bg-primary hover:text-on-primary font-label-md text-label-md transition-all duration-300 flex items-center space-x-xs">
               <span>Load More Styles</span>
               <span className="material-symbols-outlined text-[18px]">
@@ -192,8 +192,8 @@ const Products = () => {
           </div>
         </section>
 
-        <section className="px-margin-mobile md:px-margin-desktop mb-xl">
-          <div className="bg-primary-fixed/10 rounded-xl p-lg md:p-xl flex flex-col md:flex-row items-center justify-between gap-lg relative overflow-hidden border border-primary/10">
+        <section className="px-margin-mobile md:px-margin-desktop mb-lg">
+          <div className="bg-primary-fixed/10 rounded-xl p-lg md:p-lg flex flex-col md:flex-row items-center justify-between gap-lg relative overflow-hidden border border-primary/10">
             <div className="absolute -top-1/2 -left-1/4 w-96 h-96 bg-primary-fixed rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
             <div className="relative z-10 w-full md:w-1/2">
               <span className="flex items-center space-x-xs text-primary font-label-md text-label-md uppercase tracking-wider mb-sm">

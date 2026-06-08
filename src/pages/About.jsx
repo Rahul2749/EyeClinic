@@ -13,8 +13,8 @@ const About = () => {
       <div id="about" className="section-container pt-24 -mt-24">
         
 
-        <section className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-xl overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+        <section className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-lg overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-md md:gap-lg items-start">
             <div
               className="lg:col-span-7 glass-panel rounded-xl p-lg shadow-[0_10px_30px_rgba(0,0,0,0.03)] reveal-element"
               id="form-card"

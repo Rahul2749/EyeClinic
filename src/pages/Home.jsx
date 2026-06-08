@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <>
       <main>
-        <section id="home" className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
+        <section id="home" className="relative min-h-screen flex items-center pt-24 pb-8 overflow-hidden">
           <div className="absolute inset-0 z-0 flex justify-end">
             <div className="w-full md:w-2/3 h-full relative">
               <img

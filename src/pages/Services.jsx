@@ -14,8 +14,8 @@ const Services = () => {
         
 
         <section
-          className="px-margin-mobile md:px-margin-desktop py-xl bg-surface-bright"
-          id="services" className="pt-24 -mt-24"
+          className="px-margin-mobile md:px-margin-desktop py-lg md:py-lg bg-surface-bright pt-24 -mt-24"
+          id="services"
         >
           <div className="max-w-container-max mx-auto">
             <div className="text-center mb-16 services-header">
@@ -147,7 +147,7 @@ const Services = () => {
           </div>
         </section>
 
-        <section className="px-margin-mobile md:px-margin-desktop py-xl bg-surface">
+        <section className="px-margin-mobile md:px-margin-desktop py-lg bg-surface">
           <div className="max-w-container-max mx-auto flex flex-col lg:flex-row gap-xl items-center doctor-section">
             <div className="w-full lg:w-1/2 doctor-img-wrapper">
               <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden shadow-2xl">
