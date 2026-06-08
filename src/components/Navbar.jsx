@@ -5,18 +5,35 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
+    const handleScroll = () => {
+      const sections = ['home', 'services', 'products', 'about'];
+      let current = '';
+
+      // Check if we're at the bottom of the page
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
+        setActiveSection('about');
+        return;
+      }
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        // 200px offset to trigger a bit earlier when scrolling down
+        if (section && window.scrollY >= section.offsetTop - 200) {
+          current = sections[i];
+          break;
         }
-      });
-    }, { threshold: 0.5 });
+      }
 
-    const sections = ['home', 'products', 'services', 'about'].map(id => document.getElementById(id)).filter(Boolean);
-    sections.forEach(s => observer.observe(s));
+      if (current) {
+        setActiveSection(current);
+      }
+    };
 
-    return () => sections.forEach(s => observer.unobserve(s));
+    window.addEventListener('scroll', handleScroll);
+    // Call once to set initial state
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
@@ -36,11 +53,11 @@ const Navbar = () => {
           </span>
         </div>
         <nav className="hidden md:flex items-center gap-lg">
-          <a className={activeSection === 'home' ? `font-body-md text-label-md text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full opacity-80 scale-95 transition-all` : `font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300`} href="#home">Home</a>
-          <a className={activeSection === 'products' ? `font-body-md text-label-md text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full opacity-80 scale-95 transition-all` : `font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300`} href="#products">Optical Shop</a>
-          <a className={activeSection === 'services' ? `font-body-md text-label-md text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full opacity-80 scale-95 transition-all` : `font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300`} href="#services">Services</a>
-          <a className={activeSection === 'about' ? `font-body-md text-label-md text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full opacity-80 scale-95 transition-all` : `font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300`} href="#about">Appointments</a>
-          <a className={activeSection === 'about' ? `font-body-md text-label-md text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full opacity-80 scale-95 transition-all` : `font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300`} href="#about">About Us</a>
+          <a className={activeSection === 'home' ? `font-body-md text-label-md text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full opacity-80 scale-95 transition-all` : `font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300`} href="#home" onClick={() => setActiveSection('home')}>Home</a>
+          <a className={activeSection === 'products' ? `font-body-md text-label-md text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full opacity-80 scale-95 transition-all` : `font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300`} href="#products" onClick={() => setActiveSection('products')}>Optical Shop</a>
+          <a className={activeSection === 'services' ? `font-body-md text-label-md text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full opacity-80 scale-95 transition-all` : `font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300`} href="#services" onClick={() => setActiveSection('services')}>Services</a>
+          <a className={activeSection === 'about' ? `font-body-md text-label-md text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full opacity-80 scale-95 transition-all` : `font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300`} href="#about" onClick={() => setActiveSection('about')}>Appointments</a>
+          <a className={activeSection === 'about' ? `font-body-md text-label-md text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full opacity-80 scale-95 transition-all` : `font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300`} href="#about" onClick={() => setActiveSection('about')}>About Us</a>
         </nav>
         <div className="flex items-center gap-4">
           <button onClick={() => window.dispatchEvent(new Event('open-booking-modal'))} className="hidden md:inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-[#006D77] text-white font-label-md hover:scale-105 transition-transform duration-300 shadow-sm">
