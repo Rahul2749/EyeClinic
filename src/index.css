@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .glass-layer {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+  .clinical-layer {
+    background: #ffffff;
+    border: 1px solid rgba(0, 109, 119, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  }
+  .soft-glow {
+    box-shadow: 0 20px 40px rgba(0, 83, 91, 0.05);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
