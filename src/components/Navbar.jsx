@@ -71,7 +71,7 @@ const Navbar = () => {
           <a className={activeSection === 'about' ? `font-body-md text-label-md text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full opacity-80 scale-95 transition-all` : `font-body-md text-label-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300`} href="#about" onClick={() => handleNavClick('about')}>About Us</a>
         </nav>
         <div className="flex items-center gap-4">
-          <button onClick={() => window.dispatchEvent(new Event('open-booking-modal'))} className="magnetic hidden md:inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-[#006D77] text-white font-label-md hover:scale-105 transition-transform duration-300 shadow-sm">
+          <button onClick={() => window.dispatchEvent(new Event('open-booking-modal'))} className="hidden md:inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-[#006D77] text-white font-label-md hover:scale-105 transition-transform duration-300 shadow-sm">
             Book Consultation
           </button>
           <button className="md:hidden text-primary">
