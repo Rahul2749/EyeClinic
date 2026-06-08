@@ -97,7 +97,7 @@ const Home = () => {
                 <a href="#products" className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-primary/20 text-primary bg-surface/50 hover:bg-surface transition-colors duration-300 font-label-md">Shop the Collection</a>
               </div>
 
-              <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-outline-variant/30 pt-8">
+              <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-outline-variant/30 pt-6">
                 <div className="flex flex-col gap-2 gsap-trust">
                   <span className="material-symbols-outlined text-[#006D77] text-2xl">
                     biotech
@@ -134,7 +134,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="lg:col-span-6 h-[500px] lg:h-[700px] relative mt-12 lg:mt-0 glass-layer rounded-2xl overflow-hidden soft-glow gsap-reveal">
+            <div className="lg:col-span-6 h-[400px] lg:h-[550px] xl:h-[600px] relative mt-8 lg:mt-0 glass-layer rounded-2xl overflow-hidden soft-glow gsap-reveal">
               <div className="absolute top-4 left-4 z-20 bg-white/80 px-4 py-2 rounded-full shadow-sm text-xs font-label-md text-[#006D77] flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#83C5BE] animate-pulse"></span>
                 Interactive View
