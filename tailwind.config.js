@@ -25,6 +25,9 @@ export default {
         "on-tertiary-fixed": "#301400",
         "secondary-fixed": "#acefe7",
         "on-error-container": "#93000a",
+        "accent-gold": "#D4AF37",
+        "accent-champagne": "#F7E7CE",
+        "accent-rose": "#B76E79",
         "surface-tint": "#006972",
         "primary-fixed-dim": "#82d3de",
         "primary-container": "#006d77",
@@ -75,15 +78,15 @@ export default {
         "margin-desktop": "64px"
       },
       "fontFamily": {
-        "body-lg": ["Inter", "sans-serif"],
-        "body-md": ["Inter", "sans-serif"],
-        "headline-md": ["Playfair Display", "serif"],
-        "headline-lg": ["Playfair Display", "serif"],
-        "display-lg": ["Playfair Display", "serif"],
-        "headline-sm": ["Playfair Display", "serif"],
-        "label-md": ["Inter", "sans-serif"],
-        "caption": ["Inter", "sans-serif"],
-        "headline-lg-mobile": ["Playfair Display", "serif"]
+        "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+        "body-md": ["Plus Jakarta Sans", "sans-serif"],
+        "headline-md": ["Outfit", "serif"],
+        "headline-lg": ["Outfit", "serif"],
+        "display-lg": ["Outfit", "serif"],
+        "headline-sm": ["Outfit", "serif"],
+        "label-md": ["Plus Jakarta Sans", "sans-serif"],
+        "caption": ["Plus Jakarta Sans", "sans-serif"],
+        "headline-lg-mobile": ["Outfit", "serif"]
       },
       "fontSize": {
         "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],

@@ -49,6 +49,42 @@ const Home = () => {
         delay: 0.5
       });
     });
+    
+      // Magnetic Buttons
+      const magnets = document.querySelectorAll('.magnetic');
+      magnets.forEach(magnet => {
+        magnet.addEventListener('mousemove', function(e) {
+          const position = magnet.getBoundingClientRect();
+          const x = e.pageX - position.left - position.width / 2;
+          const y = e.pageY - position.top - position.height / 2;
+          
+          gsap.to(magnet, {
+            x: x * 0.3,
+            y: y * 0.3,
+            duration: 0.5,
+            ease: "power2.out"
+          });
+        });
+        
+        magnet.addEventListener('mouseleave', function() {
+          gsap.to(magnet, {
+            x: 0,
+            y: 0,
+            duration: 0.5,
+            ease: "elastic.out(1, 0.3)"
+          });
+        });
+      });
+      
+      // Floating 3D Eye
+      gsap.to(".floating-model", {
+        y: -15,
+        duration: 2.5,
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut"
+      });
+
     return () => ctx.revert();
   }, []);
   return (
@@ -94,7 +130,7 @@ const Home = () => {
               </p>
               <div className="flex flex-wrap items-center gap-4 mt-4 gsap-cta">
                 <button onClick={() => window.dispatchEvent(new Event('open-booking-modal'))} className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-primary text-on-primary font-label-md hover:scale-105 transition-transform duration-300 shadow-md soft-glow">Book Consultation <span className="material-symbols-outlined ml-2 text-sm">arrow_forward</span></button>
-                <a href="#products" className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-primary/20 text-primary bg-surface/50 hover:bg-surface transition-colors duration-300 font-label-md">Shop the Collection</a>
+                <a href="#products" className="magnetic inline-flex items-center justify-center px-8 py-4 rounded-full border border-primary/20 text-primary bg-surface/50 hover:bg-surface transition-colors duration-300 font-label-md">Shop the Collection</a>
               </div>
 
               <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-outline-variant/30 pt-4">

@@ -43,11 +43,11 @@ const Services = () => {
                 accurate diagnoses and effective, personalized treatment plans.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter auto-rows-[minmax(250px,auto)]">
-              <div className="md:col-span-8 bg-surface rounded-xl clinical-card-shadow p-8 flex flex-col justify-between group relative overflow-hidden service-card">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[minmax(250px,auto)]">
+              <div className="md:col-span-8 glass-layer rounded-3xl p-8 flex flex-col justify-between group relative overflow-hidden service-card hover:-translate-y-2 transition-transform duration-500">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
                 <div className="relative z-10">
-                  <span className="material-symbols-outlined text-primary text-[48px] mb-6 service-icon">
+                  <span className="material-symbols-outlined text-accent-gold text-[48px] mb-6 service-icon">
                     biotech
                   </span>
                   <h3 className="font-headline-md text-headline-md text-on-background mb-4">
@@ -73,9 +73,9 @@ const Services = () => {
                 </div>
               </div>
 
-              <div className="md:col-span-4 bg-primary text-on-primary rounded-xl p-8 flex flex-col justify-between group service-card">
+              <div className="md:col-span-4 bg-primary text-white rounded-3xl shadow-[0_8px_32px_0_rgba(0,109,119,0.2)] p-8 flex flex-col justify-between group service-card hover:-translate-y-2 transition-transform duration-500">
                 <div>
-                  <span className="material-symbols-outlined text-primary-fixed text-[40px] mb-6 service-icon">
+                  <span className="material-symbols-outlined text-accent-champagne text-[40px] mb-6 service-icon">
                     lens_blur
                   </span>
                   <h3 className="font-headline-sm text-headline-sm mb-4">
@@ -99,9 +99,9 @@ const Services = () => {
                 </div>
               </div>
 
-              <div className="md:col-span-4 bg-surface rounded-xl clinical-card-shadow p-8 flex flex-col justify-between group service-card">
+              <div className="md:col-span-4 glass-layer rounded-3xl p-8 flex flex-col justify-between group service-card hover:-translate-y-2 transition-transform duration-500">
                 <div>
-                  <span className="material-symbols-outlined text-secondary text-[40px] mb-6 service-icon">
+                  <span className="material-symbols-outlined text-accent-gold text-[40px] mb-6 service-icon">
                     child_care
                   </span>
                   <h3 className="font-headline-sm text-headline-sm text-on-background mb-4">
@@ -125,10 +125,10 @@ const Services = () => {
                 </div>
               </div>
 
-              <div className="md:col-span-8 bg-surface rounded-xl clinical-card-shadow p-8 flex flex-col md:flex-row gap-8 items-center group relative overflow-hidden service-card">
+              <div className="md:col-span-8 glass-layer rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-center group relative overflow-hidden service-card hover:-translate-y-2 transition-transform duration-500">
                 <div className="absolute inset-0 bg-gradient-to-br from-surface to-surface-container-low z-0"></div>
                 <div className="flex-1 relative z-10">
-                  <span className="material-symbols-outlined text-primary text-[48px] mb-6 service-icon">
+                  <span className="material-symbols-outlined text-accent-gold text-[48px] mb-6 service-icon">
                     carpenter
                   </span>
                   <h3 className="font-headline-md text-headline-md text-on-background mb-4">
