@@ -4,6 +4,7 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isClicking = useRef(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -106,11 +107,28 @@ const Navbar = () => {
           <button onClick={() => window.dispatchEvent(new Event('open-booking-modal'))} className="btn-primary hidden md:inline-flex">
             Book Consultation
           </button>
-          <button className="md:hidden text-white">
-            <span className="material-symbols-outlined text-3xl">menu</span>
+          <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            <span className="material-symbols-outlined text-3xl">{isMobileMenuOpen ? 'close' : 'menu'}</span>
           </button>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden fixed top-[72px] left-0 w-full h-[calc(100svh-72px)] bg-c-primary/98 backdrop-blur-3xl border-t border-white/10 shadow-2xl px-margin-mobile py-8 flex flex-col gap-8 animate-in slide-in-from-top-2 duration-300 z-40 overflow-y-auto pb-24">
+          <nav className="flex flex-col gap-6 mt-4">
+            <a className={activeSection === 'home' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#home" onClick={(e) => { handleNavClick(e, 'home'); setIsMobileMenuOpen(false); }}>Home</a>
+            <a className={activeSection === 'products' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#products" onClick={(e) => { handleNavClick(e, 'products'); setIsMobileMenuOpen(false); }}>Optical Shop</a>
+            <a className={activeSection === 'services' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#services" onClick={(e) => { handleNavClick(e, 'services'); setIsMobileMenuOpen(false); }}>Services</a>
+            <a className={activeSection === 'about' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#about" onClick={(e) => { handleNavClick(e, 'about'); setIsMobileMenuOpen(false); }}>Appointments</a>
+          </nav>
+          <div className="mt-auto">
+            <button onClick={() => { window.dispatchEvent(new Event('open-booking-modal')); setIsMobileMenuOpen(false); }} className="btn-primary w-full text-center py-4 text-[16px]">
+              Book Consultation
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

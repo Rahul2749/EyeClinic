@@ -90,7 +90,7 @@ const Home = () => {
       <main>
         <section id="home" className="hero-section relative flex flex-col overflow-hidden scroll-mt-0">
           
-          <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center w-full pt-8 pb-12">
+          <div className="min-h-[calc(100svh-80px)] flex flex-col justify-center w-full pt-8 pb-12">
             <div className="max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop relative z-10 hero-grid">
             
             {/* Left Content */}
