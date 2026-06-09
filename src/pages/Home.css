@@ -3,7 +3,6 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 2.5rem;
-  min-height: 80vh;
   align-items: center;
 }
 
@@ -11,18 +10,13 @@
   .hero-grid {
     grid-template-columns: 45fr 55fr;
     gap: 0;
-    min-height: 92vh;
   }
 }
 
 /* Hero Section */
 .hero-section {
   position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
   overflow: hidden;
-  padding-top: 80px; /* Offset for navbar */
   background-color: var(--c-primary);
 }
 
@@ -108,36 +102,6 @@
   font-size: 1.1rem;
 }
 
-.service-card {
-  background-color: white;
-  padding: 2.5rem 2rem;
-  border-radius: 16px;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0,0,0,0.03);
-}
-
-.service-card:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(0, 163, 108, 0.2);
-}
-
-.service-icon {
-  color: var(--color-secondary);
-  margin-bottom: 1.5rem;
-}
-
-.service-card h3 {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-}
-
-.service-card p {
-  color: var(--color-text-muted);
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
-}
 
 .link-more {
   color: var(--color-secondary);

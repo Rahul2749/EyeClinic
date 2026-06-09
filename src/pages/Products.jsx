@@ -52,17 +52,21 @@ const Products = () => {
   useEffect(() => {
     let ctx = gsap.context(() => {
       // Stagger product cards
-      gsap.from(".product-card", {
-        scrollTrigger: {
-          trigger: "#product-grid",
-          start: "top 80%",
-        },
-        y: 60,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out"
-      });
+      gsap.fromTo(".product-card", 
+        { y: 60, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: "#product-grid",
+            start: "top 80%",
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "power3.out",
+          clearProps: "all"
+        }
+      );
 
       // 3D Magnetic Tilt for Product Cards
       const cards = document.querySelectorAll('.product-card');
@@ -121,18 +125,18 @@ const Products = () => {
 
   return (
     <>
-      <div id="products" className="max-w-container-max mx-auto scroll-mt-24 pb-space-3xl">
+      <div id="products" className="max-w-container-max mx-auto scroll-mt-24 pb-space-xl">
         <div className="relative">
           <section className="px-margin-mobile md:px-margin-desktop mb-space-lg flex flex-col md:flex-row justify-between items-center gap-6 sticky top-20 z-40 bg-c-surface/90 backdrop-blur-md py-4 border-b border-c-border">
-            <div className="w-full md:w-auto overflow-x-auto no-scrollbar">
-              <div className="flex space-x-4 min-w-max" id="category-filters">
+            <div className="w-full md:w-[calc(100%-280px)] overflow-x-auto no-scrollbar pb-2 md:pb-0 fade-edges">
+              <div className="flex gap-2 md:gap-3 w-max" id="category-filters">
                 {categories.map(cat => {
                   const isActive = selectedCategory === cat;
                   return (
                     <button
                       key={cat}
                       onClick={() => setSelectedCategory(cat)}
-                      className={`px-6 py-2 rounded-full font-body text-[0.875rem] font-medium transition-all duration-300 ${
+                      className={`whitespace-nowrap px-4 md:px-5 py-2 rounded-full font-body text-[0.875rem] font-medium transition-all duration-300 ${
                         isActive
                           ? "bg-c-primary text-white shadow-md scale-105"
                           : "bg-white text-c-muted border border-c-border hover:text-c-teal hover:border-c-teal"
@@ -145,12 +149,12 @@ const Products = () => {
               </div>
             </div>
 
-            <div className="w-full md:w-auto relative group">
+            <div className="w-full md:w-[260px] relative group">
               <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-c-muted group-focus-within:text-c-teal transition-colors">
                 search
               </span>
               <input
-                className="w-full md:w-[280px] pl-12 pr-4 py-3 rounded-full bg-white border border-c-border focus:border-c-teal focus:ring-2 focus:ring-c-teal/20 transition-all font-body text-[0.9375rem] text-c-text placeholder:text-c-muted"
+                className="w-full pl-12 pr-4 py-3 rounded-full bg-white border border-c-border focus:border-c-teal focus:ring-2 focus:ring-c-teal/20 transition-all font-body text-[0.9375rem] text-c-text placeholder:text-c-muted"
                 placeholder="Search brands or styles..."
                 type="text"
                 value={searchQuery}
@@ -160,7 +164,7 @@ const Products = () => {
           </section>
 
           {/* Product Grid */}
-          <section className="px-margin-mobile md:px-margin-desktop mb-space-2xl">
+          <section className="px-margin-mobile md:px-margin-desktop mb-space-xl">
             {filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
                 {filteredProducts.map(product => (

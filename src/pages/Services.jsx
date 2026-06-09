@@ -11,29 +11,37 @@ const Services = () => {
     let ctx = gsap.context(() => {
       // Section Heading Clip Reveal
       gsap.utils.toArray('.section-heading').forEach(heading => {
-        gsap.from(heading, {
-          scrollTrigger: { trigger: heading, start: 'top 85%' },
-          clipPath: 'inset(100% 0 0 0)',
-          y: 30,
-          duration: 0.8,
-          ease: 'power3.out'
-        });
+        gsap.fromTo(heading, 
+          { clipPath: 'inset(100% 0 0 0)', y: 30 },
+          {
+            scrollTrigger: { trigger: heading, start: 'top 85%' },
+            clipPath: 'inset(0% 0 0 0)',
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            clearProps: 'all'
+          }
+        );
       });
 
       // Service Cards Stagger
-      gsap.from('.service-card', {
-        scrollTrigger: {
-          trigger: '.services-section',
-          start: 'top 75%',
-          end: 'bottom 25%',
-          toggleActions: 'play none none reverse'
-        },
-        y: 60,
-        opacity: 0,
-        duration: 0.7,
-        stagger: { amount: 0.6, from: 'start' },
-        ease: 'power2.out'
-      });
+      gsap.fromTo('.service-card', 
+        { y: 60, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: '.services-section',
+            start: 'top 75%',
+            end: 'bottom 25%',
+            toggleActions: 'play none none reverse'
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          stagger: { amount: 0.6, from: 'start' },
+          ease: 'power2.out',
+          clearProps: 'all'
+        }
+      );
     });
     return () => ctx.revert();
   }, []);
@@ -41,10 +49,10 @@ const Services = () => {
   return (
     <>
       <div className="section-container">
-        <section className="services-section px-margin-mobile md:px-margin-desktop py-space-3xl bg-c-surface scroll-mt-24" id="services">
+        <section className="services-section px-margin-mobile md:px-margin-desktop py-space-xl bg-c-surface scroll-mt-24" id="services">
           <div className="max-w-container-max mx-auto">
             
-            <div className="text-center mb-space-2xl services-header">
+            <div className="text-center mb-space-xl services-header">
               <h2 className="section-heading font-display text-[clamp(2.5rem,4vw,3.5rem)] font-semibold text-c-text mb-4 tracking-[-0.02em]">
                 Diagnostic Board
               </h2>
@@ -79,21 +87,21 @@ const Services = () => {
 
               {/* Row 1: Tall Card 40% (col-span-5) */}
               <div className="md:col-span-5 bg-c-teal text-white rounded-xl p-10 flex flex-col justify-between group relative overflow-hidden service-card shadow-lg hover:-translate-y-1 transition-transform duration-300">
-                <div className="absolute inset-0 bg-gradient-to-br from-c-primary to-c-teal opacity-50 z-0"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-c-primary to-c-teal opacity-70 z-0"></div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-6">
-                    <span className="material-symbols-outlined text-c-accent text-[28px]">lens_blur</span>
-                    <span className="font-mono text-[0.75rem] tracking-[0.12em] text-c-accent uppercase border-l-2 border-c-accent pl-3">Surgical</span>
+                    <span className="material-symbols-outlined text-white text-[28px]">lens_blur</span>
+                    <span className="font-mono text-[0.75rem] tracking-[0.12em] text-white uppercase border-l-2 border-white/50 pl-3">Surgical</span>
                   </div>
-                  <h3 className="font-display text-[2rem] font-semibold mb-4">
+                  <h3 className="font-display text-[2rem] font-semibold mb-4 text-white">
                     Advanced Cataract Surgery
                   </h3>
-                  <p className="font-body text-[1.0625rem] text-white/80 leading-[1.7]">
+                  <p className="font-body text-[1.0625rem] text-white opacity-90 leading-[1.7]">
                     Restoring clarity with precision laser-assisted techniques and premium intraocular lenses for optimal visual outcomes.
                   </p>
                 </div>
                 <div className="mt-8 relative z-10">
-                  <a className="inline-flex items-center text-c-accent font-body font-medium text-[0.9375rem] group-hover:gap-2 transition-all duration-300" href="#">
+                  <a className="inline-flex items-center text-white font-body font-medium text-[0.9375rem] group-hover:gap-2 transition-all duration-300" href="#">
                     View Procedures <span className="material-symbols-outlined text-[18px] ml-1">arrow_forward</span>
                   </a>
                 </div>
@@ -125,20 +133,20 @@ const Services = () => {
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] border border-c-accent/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 z-0"></div>
                 <div className="flex-1 relative z-10">
                   <div className="flex items-center gap-3 mb-6">
-                    <span className="material-symbols-outlined text-c-accent text-[28px]">center_focus_strong</span>
-                    <span className="font-mono text-[0.75rem] tracking-[0.12em] text-c-accent uppercase border-l-2 border-c-accent pl-3">Correction</span>
+                    <span className="material-symbols-outlined text-white text-[28px]">center_focus_strong</span>
+                    <span className="font-mono text-[0.75rem] tracking-[0.12em] text-white uppercase border-l-2 border-white pl-3">Correction</span>
                   </div>
                   <h3 className="font-display text-[2.5rem] font-semibold mb-4 leading-tight">
                     Laser Vision Correction
                   </h3>
-                  <p className="font-body text-[1.0625rem] text-c-white/80 mb-8 leading-[1.7] max-w-[90%]">
+                  <p className="font-body text-[1.0625rem] text-white opacity-90 leading-[1.7]">
                     Experience life without boundaries. State-of-the-art LASIK and PRK procedures tailored to your unique corneal topography for the highest level of precision.
                   </p>
-                  <a className="inline-flex items-center text-c-accent font-body font-medium text-[0.9375rem] group-hover:gap-2 transition-all duration-300" href="#">
+                  <a className="inline-flex items-center text-white font-body font-medium text-[0.9375rem] group-hover:gap-2 transition-all duration-300" href="#">
                     Determine Eligibility <span className="material-symbols-outlined text-[18px] ml-1">arrow_forward</span>
                   </a>
                 </div>
-                <div className="w-full md:w-[250px] aspect-square rounded-lg overflow-hidden relative z-10 hidden md:block">
+                <div className="w-full md:w-64 md:h-64 shrink-0 rounded-lg overflow-hidden relative z-10 hidden md:block">
                   <img
                     alt="Laser Technology"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
@@ -152,7 +160,7 @@ const Services = () => {
         </section>
 
         {/* Doctor Section */}
-        <section className="px-margin-mobile md:px-margin-desktop py-space-3xl bg-white border-t border-c-border">
+        <section className="px-margin-mobile md:px-margin-desktop py-space-xl bg-white border-t border-c-border">
           <div className="max-w-container-max mx-auto flex flex-col lg:flex-row gap-space-xl items-center doctor-section">
             <div className="w-full lg:w-1/2 doctor-img-wrapper">
               <div className="relative w-full max-w-[500px] mx-auto aspect-[4/5] rounded-xl overflow-hidden shadow-[0_25px_60px_rgba(10,61,74,0.15)]">

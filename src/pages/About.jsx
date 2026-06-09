@@ -9,29 +9,37 @@ const About = () => {
   useEffect(() => {
     let ctx = gsap.context(() => {
       // Form fields staggered reveal
-      gsap.from(".form-group", {
-        scrollTrigger: {
-          trigger: "#appointment-form",
-          start: "top 80%",
-        },
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power2.out"
-      });
+      gsap.fromTo(".form-group", 
+        { y: 20, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: "#appointment-form",
+            start: "top 80%",
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power2.out",
+          clearProps: "all"
+        }
+      );
 
       // Clinic info card slide in
-      gsap.from("#clinic-info-card", {
-        scrollTrigger: {
-          trigger: "#clinic-info-card",
-          start: "top 80%",
-        },
-        x: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      });
+      gsap.fromTo("#clinic-info-card", 
+        { x: 40, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: "#clinic-info-card",
+            start: "top 80%",
+          },
+          x: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          clearProps: "all"
+        }
+      );
 
       // FAQ accordion
       const faqItems = document.querySelectorAll('.faq-item');
@@ -67,8 +75,8 @@ const About = () => {
 
   return (
     <>
-      <div id="about" className="section-container scroll-mt-24 pb-space-3xl">
-        <section className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop overflow-hidden pt-space-2xl">
+      <div id="about" className="section-container scroll-mt-24 pb-space-xl">
+        <section className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop overflow-hidden pt-space-xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             
             {/* Appointment Form */}
@@ -231,7 +239,7 @@ const About = () => {
         </section>
 
         {/* Patient Help Desk (FAQ) */}
-        <section className="bg-c-surface py-space-3xl mt-space-2xl border-t border-c-border">
+        <section className="bg-c-surface py-space-xl mt-space-xl border-t border-c-border">
           <div className="max-w-3xl mx-auto px-margin-mobile md:px-margin-desktop">
             <div className="text-center mb-12">
               <h2 className="font-display text-[2.25rem] font-semibold text-c-text mb-3">

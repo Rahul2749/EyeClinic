@@ -7,11 +7,13 @@ import Services from "./pages/Services";
 import Products from "./pages/Products";
 import About from "./pages/About";
 import BookingModal from "./components/BookingModal";
+import Preloader from "./components/Preloader";
 
 function App() {
   return (
     <Router>
       <div className="app bg-background text-on-background min-h-screen flex flex-col">
+        <Preloader />
         <Navbar />
         <main className="flex-grow pt-20">
           <Routes>

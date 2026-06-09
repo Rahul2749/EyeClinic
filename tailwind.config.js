@@ -47,8 +47,8 @@ export default {
         "g-cta": "linear-gradient(90deg, #0B6E73 0%, #00C9A7 100%)",
       },
       spacing: {
-        "container-max": "1280px",
-        "gutter": "clamp(1.5rem, 5vw, 4rem)",
+        "container-max": "1440px",
+        "gutter": "clamp(1rem, 4vw, 2.5rem)",
         "space-xs": "0.5rem",
         "space-sm": "1rem",
         "space-md": "1.5rem",
@@ -57,7 +57,7 @@ export default {
         "space-2xl": "6rem",
         "space-3xl": "10rem",
         "margin-mobile": "16px",
-        "margin-desktop": "64px"
+        "margin-desktop": "3rem"
       }
     },
   },

@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Services from "./Services";
 import Products from "./Products";
 import About from "./About";
+import AnimatedEye from "../components/AnimatedEye";
 import "./Home.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -87,9 +88,10 @@ const Home = () => {
   return (
     <>
       <main>
-        <section id="home" className="hero-section relative min-h-[95vh] flex items-center pt-24 pb-28 overflow-hidden scroll-mt-0">
+        <section id="home" className="hero-section relative flex flex-col overflow-hidden scroll-mt-0">
           
-          <div className="max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop relative z-10 hero-grid">
+          <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center w-full pt-8 pb-12">
+            <div className="max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop relative z-10 hero-grid">
             
             {/* Left Content */}
             <div className="flex flex-col justify-center gap-6 z-20">
@@ -100,16 +102,16 @@ const Home = () => {
                 </span>
               </div>
               
-              <h1 className="hero-headline text-white mt-4">
+              <h1 className="hero-headline text-white mt-6">
                 <div className="overflow-hidden">
-                  <span className="block hero-headline-word">Visionary Care,</span>
+                  <span className="block hero-headline-word text-[clamp(3.5rem,6vw,5.5rem)] leading-none tracking-tight">Visionary Care,</span>
                 </div>
-                <div className="overflow-hidden">
-                  <span className="block accent hero-headline-word">Exceptional Style.</span>
+                <div className="overflow-hidden mt-2">
+                  <span className="block accent hero-headline-word text-[clamp(3.5rem,6vw,5.5rem)] leading-none tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-c-accent to-c-teal">Exceptional Style.</span>
                 </div>
               </h1>
               
-              <p className="hero-body font-body text-[1.0625rem] text-c-surface/80 leading-[1.7] max-w-lg mt-2">
+              <p className="hero-body font-body text-[1.125rem] text-c-surface/80 leading-[1.8] max-w-lg mt-4 font-light">
                 Experience precision diagnostics and discover curated eyewear collections in a state-of-the-art boutique clinic designed for your clarity.
               </p>
               
@@ -123,16 +125,16 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Right Visual (Floating 3D Eye) */}
-            <div className="hero-image relative h-[400px] md:h-[600px] flex items-center justify-center z-10 md:translate-x-[8%] md:-translate-y-[5%]">
-              <div className="hero-3d-eye w-full h-full max-w-[500px] max-h-[500px] relative">
-                <img src="/images/hero_interactive.png" alt="Interactive 3D Eye Model" className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,201,167,0.2)]" />
-              </div>
+            {/* Right Visual (Interactive SVG Eye) */}
+            <div className="hero-image relative h-[300px] md:h-[450px] flex items-center justify-center z-10 md:translate-x-[5%] md:-translate-y-[2%]">
+              <div className="w-full h-full absolute top-0 left-0 bg-c-teal/10 blur-[100px] rounded-full pointer-events-none scale-150"></div>
+              <AnimatedEye />
             </div>
+          </div>
           </div>
           
           {/* Stat Strip */}
-          <div className="absolute bottom-0 left-0 w-full bg-c-primary/40 backdrop-blur-[10px] border-t border-c-white/10 z-20">
+          <div className="relative w-full bg-c-primary/40 backdrop-blur-[10px] border-t border-c-white/10 z-20">
             <div className="max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-6">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
                 <div className="hero-stat-item flex items-center gap-4">
