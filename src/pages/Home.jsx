@@ -5,151 +5,163 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Services from "./Services";
 import Products from "./Products";
 import About from "./About";
+import "./Home.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
-    useEffect(() => {
+  useEffect(() => {
     let ctx = gsap.context(() => {
-      gsap.from(".gsap-headline-line", {
-        y: 100,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.2,
-        ease: "power4.out",
-        delay: 0.2
+      // 1. Nav slides down
+      gsap.from('nav, header', {
+        y: -80, opacity: 0, duration: 0.7,
+        ease: 'power3.out'
       });
-      gsap.from(".gsap-subhead", {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        delay: 0.8
+
+      // 2. Hero badge
+      gsap.from('.hero-badge', {
+        y: 20, opacity: 0, duration: 0.5, delay: 0.3,
+        ease: 'power2.out'
       });
-      gsap.from(".gsap-cta", {
-        scale: 0.9,
-        opacity: 0,
-        duration: 0.8,
-        ease: "back.out(1.7)",
-        delay: 1.2
+
+      // 3. Headline
+      gsap.from('.hero-headline-word', {
+        y: 60, opacity: 0, duration: 0.8, delay: 0.5,
+        stagger: 0.08, ease: 'power3.out'
       });
-      gsap.from(".gsap-trust", {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power2.out",
-        delay: 1.4
+
+      // 4. Subtext + CTA
+      gsap.from(['.hero-body', '.hero-cta'], {
+        y: 30, opacity: 0, duration: 0.6, delay: 0.9,
+        stagger: 0.15, ease: 'power2.out'
       });
-      gsap.from(".gsap-reveal", {
-        x: 100,
-        opacity: 0,
-        duration: 1.5,
-        ease: "power4.out",
-        delay: 0.5
+
+      // 5. Hero image — slide in + scale
+      gsap.from('.hero-image', {
+        x: 80, opacity: 0, scale: 0.95, duration: 1,
+        delay: 0.4, ease: 'power3.out'
+      });
+
+      // 6. Stat strip
+      gsap.from('.hero-stat-item', {
+        y: 20, opacity: 0, duration: 0.5, delay: 1.2,
+        stagger: 0.12, ease: 'power2.out'
+      });
+
+      // 7. Floating 3D Eye (Idle)
+      gsap.to('.hero-3d-eye', {
+        y: -18, rotation: 2,
+        duration: 3.5,
+        ease: 'sine.inOut',
+        yoyo: true, repeat: -1
+      });
+      
+      // Nav scroll-aware shrink
+      ScrollTrigger.create({
+        start: 'top -80',
+        onUpdate: (self) => {
+          if (self.progress > 0) {
+            gsap.to('header', {
+              paddingTop: '0.75rem',
+              paddingBottom: '0.75rem',
+              backgroundColor: 'rgba(10,61,74,0.98)',
+              boxShadow: '0 4px 30px rgba(0,0,0,0.2)',
+              duration: 0.3
+            });
+          } else {
+            gsap.to('header', {
+              paddingTop: '1rem',
+              paddingBottom: '1rem',
+              backgroundColor: 'rgba(10,61,74,0.95)',
+              boxShadow: 'none',
+              duration: 0.3
+            });
+          }
+        }
       });
     });
     
     return () => ctx.revert();
   }, []);
+
   return (
     <>
       <main>
-        <section id="home" className="relative min-h-[90vh] flex items-center pt-16 pb-6 overflow-hidden scroll-mt-20">
-          <div className="absolute inset-0 z-0 flex justify-end">
-            <div className="w-full md:w-2/3 h-full relative">
-              <img
-                alt="Hero Background"
-                className="absolute inset-0 w-full h-full object-cover object-center opacity-40 mix-blend-multiply md:opacity-90 md:mix-blend-normal"
-                src="/images/hero_bg.png"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent"></div>
-            </div>
-          </div>
-          <div className="max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
-            <div className="lg:col-span-6 flex flex-col gap-6 pt-10 lg:pt-0">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#83C5BE]/20 border border-[#83C5BE] text-[#006D77] w-fit gsap-subhead">
-                <span className="material-symbols-outlined text-sm">
-                  verified
-                </span>
-                <span className="font-label-md text-xs uppercase tracking-widest">
+        <section id="home" className="hero-section relative min-h-[95vh] flex items-center pt-24 pb-28 overflow-hidden scroll-mt-0">
+          
+          <div className="max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop relative z-10 hero-grid">
+            
+            {/* Left Content */}
+            <div className="flex flex-col justify-center gap-6 z-20">
+              <div className="hero-badge inline-flex items-center gap-2 px-3 py-1 rounded-full bg-c-amber/15 w-fit">
+                <span className="material-symbols-outlined text-sm text-c-amber">verified</span>
+                <span className="font-mono text-[0.75rem] tracking-[0.1em] text-c-amber uppercase">
                   Premium Optical Care
                 </span>
               </div>
-              <h1 className="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-background">
+              
+              <h1 className="hero-headline text-white mt-4">
                 <div className="overflow-hidden">
-                  <span className="block gsap-headline-line">
-                    Visionary Care,
-                  </span>
+                  <span className="block hero-headline-word">Visionary Care,</span>
                 </div>
                 <div className="overflow-hidden">
-                  <span className="block text-[#006D77] italic font-light gsap-headline-line">
-                    Exceptional Style.
-                  </span>
+                  <span className="block accent hero-headline-word">Exceptional Style.</span>
                 </div>
               </h1>
-              <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg gsap-subhead">
-                Experience precision diagnostics and discover curated eyewear
-                collections in a state-of-the-art boutique clinic designed for
-                your clarity.
+              
+              <p className="hero-body font-body text-[1.0625rem] text-c-surface/80 leading-[1.7] max-w-lg mt-2">
+                Experience precision diagnostics and discover curated eyewear collections in a state-of-the-art boutique clinic designed for your clarity.
               </p>
-              <div className="flex flex-wrap items-center gap-4 mt-4 gsap-cta">
-                <button onClick={() => window.dispatchEvent(new Event('open-booking-modal'))} className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-primary text-on-primary font-label-md hover:scale-105 transition-transform duration-300 shadow-md soft-glow">Book Consultation <span className="material-symbols-outlined ml-2 text-sm">arrow_forward</span></button>
-                <a href="#products" className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-primary/20 text-primary bg-surface/50 hover:bg-surface transition-colors duration-300 font-label-md">Shop the Collection</a>
-              </div>
-
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-outline-variant/30 pt-4">
-                <div className="flex flex-col gap-2 gsap-trust">
-                  <span className="material-symbols-outlined text-[#006D77] text-2xl">
-                    biotech
-                  </span>
-                  <span className="font-label-md text-on-surface">
-                    Advanced Diagnostics
-                  </span>
-                  <span className="font-caption text-caption text-on-surface-variant">
-                    State-of-the-art tech.
-                  </span>
-                </div>
-                <div className="flex flex-col gap-2 gsap-trust">
-                  <span className="material-symbols-outlined text-[#006D77] text-2xl">
-                    eyeglasses
-                  </span>
-                  <span className="font-label-md text-on-surface">
-                    Premium Eyewear
-                  </span>
-                  <span className="font-caption text-caption text-on-surface-variant">
-                    Curated luxury brands.
-                  </span>
-                </div>
-                <div className="flex flex-col gap-2 gsap-trust">
-                  <span className="material-symbols-outlined text-[#006D77] text-2xl">
-                    medical_services
-                  </span>
-                  <span className="font-label-md text-on-surface">
-                    Expert Surgeons
-                  </span>
-                  <span className="font-caption text-caption text-on-surface-variant">
-                    Decades of experience.
-                  </span>
-                </div>
+              
+              <div className="flex flex-wrap items-center gap-4 mt-8 hero-cta">
+                <button onClick={() => window.dispatchEvent(new Event('open-booking-modal'))} className="btn-primary">
+                  Book Consultation <span className="material-symbols-outlined ml-1 text-[18px] align-middle">chevron_right</span>
+                </button>
+                <a href="#products" className="inline-flex items-center justify-center px-6 py-[14px] rounded-full border border-c-teal text-white hover:bg-c-teal/10 transition-colors duration-300 font-body font-semibold text-[0.9375rem] tracking-[0.02em]">
+                  Shop Collection <span className="material-symbols-outlined ml-2 text-[18px] align-middle text-c-accent">visibility</span>
+                </a>
               </div>
             </div>
 
-            <div className="lg:col-span-6 h-[350px] lg:h-[450px] xl:h-[500px] relative mt-6 lg:mt-0 glass-layer rounded-2xl overflow-hidden soft-glow gsap-reveal">
-              <div className="absolute top-4 left-4 z-20 bg-white/80 px-4 py-2 rounded-full shadow-sm text-xs font-label-md text-[#006D77] flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#83C5BE] animate-pulse"></span>
-                Interactive View
-              </div>
-
-              <div
-                className="w-full h-full cursor-grab active:cursor-grabbing"
-                id="three-container"
-              >
-                <img src="/images/hero_interactive.png" alt="Interactive 3D Eye Model" className="w-full h-full object-cover" />
+            {/* Right Visual (Floating 3D Eye) */}
+            <div className="hero-image relative h-[400px] md:h-[600px] flex items-center justify-center z-10 md:translate-x-[8%] md:-translate-y-[5%]">
+              <div className="hero-3d-eye w-full h-full max-w-[500px] max-h-[500px] relative">
+                <img src="/images/hero_interactive.png" alt="Interactive 3D Eye Model" className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,201,167,0.2)]" />
               </div>
             </div>
           </div>
+          
+          {/* Stat Strip */}
+          <div className="absolute bottom-0 left-0 w-full bg-c-primary/40 backdrop-blur-[10px] border-t border-c-white/10 z-20">
+            <div className="max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                <div className="hero-stat-item flex items-center gap-4">
+                  <span className="material-symbols-outlined text-c-accent text-[32px]">biotech</span>
+                  <div>
+                    <div className="font-body font-medium text-white text-[1.1rem]">Advanced Diagnostics</div>
+                    <div className="font-mono text-c-muted text-[0.75rem] tracking-[0.05em] uppercase mt-1">State-of-the-art tech</div>
+                  </div>
+                </div>
+                <div className="hero-stat-item flex items-center gap-4">
+                  <span className="material-symbols-outlined text-c-accent text-[32px]">eyeglasses</span>
+                  <div>
+                    <div className="font-body font-medium text-white text-[1.1rem]">Premium Eyewear</div>
+                    <div className="font-mono text-c-muted text-[0.75rem] tracking-[0.05em] uppercase mt-1">Curated luxury brands</div>
+                  </div>
+                </div>
+                <div className="hero-stat-item flex items-center gap-4">
+                  <span className="material-symbols-outlined text-c-accent text-[32px]">medical_services</span>
+                  <div>
+                    <div className="font-body font-medium text-white text-[1.1rem]">Expert Surgeons</div>
+                    <div className="font-mono text-c-muted text-[0.75rem] tracking-[0.05em] uppercase mt-1">15+ years experience</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </section>
+        
         <Services />
         <Products />
         <About />

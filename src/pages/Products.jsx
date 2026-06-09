@@ -1,13 +1,57 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import "./Products.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const PRODUCTS_DATA = [
+  {
+    id: 1,
+    name: "Aero Minimalist",
+    price: "₹4,500",
+    description: "Ultra-lightweight titanium frame for all-day comfort.",
+    category: "Frames",
+    badge: "Titanium",
+    image: "https://lh3.googleusercontent.com/aida/AP1WRLuVCPwBR5mBRrbap3LGAsUdjwEu1NEfUpPs1kaCNWkPSaO3CrZ2Lu-B6UoEuMoK1v_pRwqqDj7dAIMH5vyU9HxXv8NpWFS5j9ShnOG-1bRfem-NvDlNj5YBWQ6e83ABDpL-pQgSb8ArMifk2fHsf2vLnbIDCF1jCjLAeorw2ENpi6Tj6mloATo-Un5Wx6AGA3UGYtzHW3GUFlBBuAumtCVJ8Ul7VYR67PSJAZIaUGgRvSJfNNf1t8zyuic"
+  },
+  {
+    id: 2,
+    name: "Riviera Sun",
+    price: "₹6,200",
+    description: "Classic tortoise shell with polarized UV400 lenses.",
+    category: "Sunglasses",
+    badge: "Acetate",
+    image: "https://lh3.googleusercontent.com/aida/AP1WRLtx5m5SVWn_6eMff9JeWGVCsACII63qAVgGK6Jg4AOjiJg9pqRCyUU06jS2oC8pJ4v7z0DlwIDITulObQWVOsFthXTiLlLpgLuuo8AiNLSI4hQkTDGfoFV6kHfnyNhq1SuuuVC_7fSz5O88t6oiWSKz5lNUKL93qF7LG4AADmu_DXltir1KlS-AWRYIL1bU8AWP9hnGvMylWbJJT-BUOp3-5-SZhf0almRwKD7DUT8WaCOLEuA49Tt1BPY"
+  },
+  {
+    id: 3,
+    name: "Lumina Clear",
+    price: "₹3,800",
+    description: "Modern translucent frames protecting against digital strain.",
+    category: "Eyeglasses",
+    badge: "Blue-Light Block",
+    image: "https://lh3.googleusercontent.com/aida/AP1WRLsZNM9y4SVzLQJj_0ApDwdxukovM89uDI4fbCMg3I9TgzifJZwJNDw5CSncdx2LwPWas8W9eyVpjox_fQKuW8hdKMlXqKieqIOhCJMsqt5bfdlXQ7iPJVAgCbBMYx0hJdaqEvb4WMygILTvUr44fBsd0ydrMXpd_-XYqQ3v54xdicqK3mEgp-sEzAE08p45XKTnyYKkHytX5XRUz0rW5fduyRQ3Q-MVQY9FoiaBbF61FxXHaYHy7gNMhYs"
+  },
+  {
+    id: 4,
+    name: "Lumina Daily Contacts",
+    price: "₹2,500",
+    description: "Ultra-hydrating daily contact lenses for dry eyes.",
+    category: "Contact Lenses",
+    badge: "Daily Hydrogel",
+    image: "https://lh3.googleusercontent.com/aida/AP1WRLsZNM9y4SVzLQJj_0ApDwdxukovM89uDI4fbCMg3I9TgzifJZwJNDw5CSncdx2LwPWas8W9eyVpjox_fQKuW8hdKMlXqKieqIOhCJMsqt5bfdlXQ7iPJVAgCbBMYx0hJdaqEvb4WMygILTvUr44fBsd0ydrMXpd_-XYqQ3v54xdicqK3mEgp-sEzAE08p45XKTnyYKkHytX5XRUz0rW5fduyRQ3Q-MVQY9FoiaBbF61FxXHaYHy7gNMhYs"
+  }
+];
+
 const Products = () => {
-    useEffect(() => {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
     let ctx = gsap.context(() => {
+      // Stagger product cards
       gsap.from(".product-card", {
         scrollTrigger: {
           trigger: "#product-grid",
@@ -19,231 +63,187 @@ const Products = () => {
         stagger: 0.1,
         ease: "power3.out"
       });
+
+      // 3D Magnetic Tilt for Product Cards
+      const cards = document.querySelectorAll('.product-card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
+          const y = ((e.clientY - rect.top) / rect.height - 0.5) * 12;
+
+          gsap.to(card, {
+            rotateX: -y, rotateY: x,
+            transformPerspective: 800,
+            duration: 0.4, ease: 'power1.out'
+          });
+          
+          // Image zoom spring
+          const img = card.querySelector('.product-image');
+          if (img) {
+            gsap.to(img, {
+              scale: 1.08,
+              duration: 0.6,
+              ease: 'back.out(1.5)'
+            });
+          }
+        });
+
+        card.addEventListener('mouseleave', () => {
+          gsap.to(card, {
+            rotateX: 0, rotateY: 0,
+            duration: 0.6, ease: 'elastic.out(1, 0.5)'
+          });
+          
+          const img = card.querySelector('.product-image');
+          if (img) {
+            gsap.to(img, {
+              scale: 1,
+              duration: 0.6,
+              ease: 'power2.out'
+            });
+          }
+        });
+      });
     });
     return () => ctx.revert();
-  }, []);
+  }, [selectedCategory, searchQuery]); // Re-register animations when content filters
+
+  const categories = ["All", "Sunglasses", "Eyeglasses", "Frames", "Contact Lenses"];
+
+  const filteredProducts = PRODUCTS_DATA.filter(product => {
+    const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          product.badge.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
     <>
-      <div id="products" className="max-w-container-max mx-auto scroll-mt-24">
-        
-
-        <section className="px-margin-mobile md:px-margin-desktop mb-lg md:mb-lg flex flex-col md:flex-row justify-between items-center gap-md">
-          <div className="w-full md:w-auto overflow-x-auto no-scrollbar pb-xs -mb-xs">
-            <div className="flex space-x-sm min-w-max" id="category-filters">
-              <button
-                className="category-btn px-md py-sm rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-sm shadow-primary/20 transition-transform hover:scale-105"
-                data-filter="all"
-              >
-                All Collection
-              </button>
-              <button
-                className="category-btn px-md py-sm rounded-full bg-surface-container text-on-surface-variant border border-outline-variant/30 font-label-md text-label-md hover:bg-surface-container-high transition-colors"
-                data-filter="sunglasses"
-              >
-                Sunglasses
-              </button>
-              <button
-                className="category-btn px-md py-sm rounded-full bg-surface-container text-on-surface-variant border border-outline-variant/30 font-label-md text-label-md hover:bg-surface-container-high transition-colors"
-                data-filter="eyeglasses"
-              >
-                Eyeglasses
-              </button>
-              <button
-                className="category-btn px-md py-sm rounded-full bg-surface-container text-on-surface-variant border border-outline-variant/30 font-label-md text-label-md hover:bg-surface-container-high transition-colors"
-                data-filter="frames"
-              >
-                Frames
-              </button>
-              <button
-                className="category-btn px-md py-sm rounded-full bg-surface-container text-on-surface-variant border border-outline-variant/30 font-label-md text-label-md hover:bg-surface-container-high transition-colors"
-                data-filter="contacts"
-              >
-                Contact Lenses
-              </button>
-            </div>
-          </div>
-
-          <div className="w-full md:w-auto relative group">
-            <span className="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline-variant group-focus-within:text-primary transition-colors">
-              search
-            </span>
-            <input
-              className="w-full md:w-[250px] pl-lg pr-sm py-sm rounded-sm bg-surface border-b border-outline-variant/50 focus:border-primary focus:ring-0 focus:outline-none transition-all font-body-md text-body-md text-on-surface placeholder:text-outline-variant"
-              placeholder="Search brands or styles..."
-              type="text"
-            />
-          </div>
-        </section>
-
-        <section className="px-margin-mobile md:px-margin-desktop mb-lg">
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter"
-            id="product-grid"
-          >
-            <div
-              className="product-card group flex flex-col rounded-xl overflow-hidden glass-panel"
-              data-category="eyeglasses frames"
-            >
-              <div className="relative w-full aspect-[4/3] bg-surface-container-low overflow-hidden flex items-center justify-center p-md">
-                <div className="absolute top-sm left-sm z-10 bg-surface-bright/90 backdrop-blur-sm text-primary font-caption text-caption px-sm py-xs rounded-full border border-primary/10">
-                  Titanium
-                </div>
-                <img
-                  alt="Aero Minimalist Frames"
-                  className="product-image w-full h-full object-contain"
-                  data-alt="A macro studio shot of elegant, minimalist titanium eyeglasses resting on a pristine white surface. The lighting is soft and directional, highlighting the metallic sheen and fine craftsmanship of the thin wireframes. The background is a very subtle, soft gradient of off-white and pale primary teal, maintaining a clinical, high-end optical boutique aesthetic."
-                  src="https://lh3.googleusercontent.com/aida/AP1WRLuVCPwBR5mBRrbap3LGAsUdjwEu1NEfUpPs1kaCNWkPSaO3CrZ2Lu-B6UoEuMoK1v_pRwqqDj7dAIMH5vyU9HxXv8NpWFS5j9ShnOG-1bRfem-NvDlNj5YBWQ6e83ABDpL-pQgSb8ArMifk2fHsf2vLnbIDCF1jCjLAeorw2ENpi6Tj6mloATo-Un5Wx6AGA3UGYtzHW3GUFlBBuAumtCVJ8Ul7VYR67PSJAZIaUGgRvSJfNNf1t8zyuic"
-                />
-
-                <button
-                  aria-label="Virtual Try-On"
-                  className="absolute bottom-sm right-sm z-10 bg-surface/80 backdrop-blur-md p-xs rounded-full text-primary hover:bg-primary hover:text-on-primary transition-colors border border-primary/10 shadow-sm opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300 flex items-center justify-center"
-                >
-                  <span className="material-symbols-outlined">face</span>
-                </button>
-              </div>
-              <div className="p-md flex flex-col flex-grow bg-surface-bright">
-                <div className="flex justify-between items-start mb-xs">
-                  <h3 className="font-headline-sm text-headline-sm text-on-surface">
-                    Aero Minimalist
-                  </h3>
-                  <span className="font-label-md text-label-md text-primary font-bold">
-                    ₹4,500
-                  </span>
-                </div>
-                <p className="font-body-md text-body-md text-on-surface-variant mb-md flex-grow">
-                  Ultra-lightweight titanium frame for all-day comfort.
-                </p>
-                <button className="w-full py-sm rounded-full bg-primary/5 text-primary border border-primary/20 font-label-md text-label-md hover:bg-primary hover:text-on-primary transition-colors duration-300">
-                  View Details
-                </button>
+      <div id="products" className="max-w-container-max mx-auto scroll-mt-24 pb-space-3xl">
+        <div className="relative">
+          <section className="px-margin-mobile md:px-margin-desktop mb-space-lg flex flex-col md:flex-row justify-between items-center gap-6 sticky top-20 z-40 bg-c-surface/90 backdrop-blur-md py-4 border-b border-c-border">
+            <div className="w-full md:w-auto overflow-x-auto no-scrollbar">
+              <div className="flex space-x-4 min-w-max" id="category-filters">
+                {categories.map(cat => {
+                  const isActive = selectedCategory === cat;
+                  return (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`px-6 py-2 rounded-full font-body text-[0.875rem] font-medium transition-all duration-300 ${
+                        isActive
+                          ? "bg-c-primary text-white shadow-md scale-105"
+                          : "bg-white text-c-muted border border-c-border hover:text-c-teal hover:border-c-teal"
+                      }`}
+                    >
+                      {cat === "All" ? "All Collection" : cat}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            <div
-              className="product-card group flex flex-col rounded-xl overflow-hidden glass-panel"
-              data-category="sunglasses"
-            >
-              <div className="relative w-full aspect-[4/3] bg-surface-container-low overflow-hidden flex items-center justify-center p-md">
-                <div className="absolute top-sm left-sm z-10 bg-surface-bright/90 backdrop-blur-sm text-primary font-caption text-caption px-sm py-xs rounded-full border border-primary/10">
-                  Acetate
-                </div>
-                <img
-                  alt="Classic Tortoise Shell Sunglasses"
-                  className="product-image w-full h-full object-contain"
-                  data-alt="A premium product photography shot of classic tortoise shell sunglasses against a soft, bright, slightly textured background. The lenses have a subtle gradient tint. Studio lighting creates soft, elegant reflections on the polished acetate frames, emphasizing their premium quality. The overall color palette is warm, sophisticated, and aligns with a high-end, modern minimalist optical brand identity."
-                  src="https://lh3.googleusercontent.com/aida/AP1WRLtx5m5SVWn_6eMff9JeWGVCsACII63qAVgGK6Jg4AOjiJg9pqRCyUU06jS2oC8pJ4v7z0DlwIDITulObQWVOsFthXTiLlLpgLuuo8AiNLSI4hQkTDGfoFV6kHfnyNhq1SuuuVC_7fSz5O88t6oiWSKz5lNUKL93qF7LG4AADmu_DXltir1KlS-AWRYIL1bU8AWP9hnGvMylWbJJT-BUOp3-5-SZhf0almRwKD7DUT8WaCOLEuA49Tt1BPY"
-                />
-                <button
-                  aria-label="Virtual Try-On"
-                  className="absolute bottom-sm right-sm z-10 bg-surface/80 backdrop-blur-md p-xs rounded-full text-primary hover:bg-primary hover:text-on-primary transition-colors border border-primary/10 shadow-sm opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300 flex items-center justify-center"
-                >
-                  <span className="material-symbols-outlined">face</span>
-                </button>
-              </div>
-              <div className="p-md flex flex-col flex-grow bg-surface-bright">
-                <div className="flex justify-between items-start mb-xs">
-                  <h3 className="font-headline-sm text-headline-sm text-on-surface">
-                    Riviera Sun
-                  </h3>
-                  <span className="font-label-md text-label-md text-primary font-bold">
-                    ₹6,200
-                  </span>
-                </div>
-                <p className="font-body-md text-body-md text-on-surface-variant mb-md flex-grow">
-                  Classic tortoise shell with polarized UV400 lenses.
-                </p>
-                <button className="w-full py-sm rounded-full bg-primary/5 text-primary border border-primary/20 font-label-md text-label-md hover:bg-primary hover:text-on-primary transition-colors duration-300">
-                  View Details
-                </button>
-              </div>
-            </div>
-
-            <div
-              className="product-card group flex flex-col rounded-xl overflow-hidden glass-panel"
-              data-category="eyeglasses frames"
-            >
-              <div className="relative w-full aspect-[4/3] bg-surface-container-low overflow-hidden flex items-center justify-center p-md">
-                <div className="absolute top-sm left-sm z-10 bg-surface-bright/90 backdrop-blur-sm text-primary font-caption text-caption px-sm py-xs rounded-full border border-primary/10">
-                  Blue-Light Block
-                </div>
-                <img
-                  alt="Clear Geometric Frames"
-                  className="product-image w-full h-full object-contain"
-                  data-alt="A clean, contemporary photograph of clear, geometric eyeglasses featuring blue-light blocking lenses. The glasses are positioned on an architectural, smooth white pedestal against a pale primary teal backdrop. The lighting is pristine and clinical, highlighting the transparency of the frames and the subtle blue reflection on the lenses. The mood is modern, technological, and focused on eye health and aesthetic purity."
-                  src="https://lh3.googleusercontent.com/aida/AP1WRLsZNM9y4SVzLQJj_0ApDwdxukovM89uDI4fbCMg3I9TgzifJZwJNDw5CSncdx2LwPWas8W9eyVpjox_fQKuW8hdKMlXqKieqIOhCJMsqt5bfdlXQ7iPJVAgCbBMYx0hJdaqEvb4WMygILTvUr44fBsd0ydrMXpd_-XYqQ3v54xdicqK3mEgp-sEzAE08p45XKTnyYKkHytX5XRUz0rW5fduyRQ3Q-MVQY9FoiaBbF61FxXHaYHy7gNMhYs"
-                />
-                <button
-                  aria-label="Virtual Try-On"
-                  className="absolute bottom-sm right-sm z-10 bg-surface/80 backdrop-blur-md p-xs rounded-full text-primary hover:bg-primary hover:text-on-primary transition-colors border border-primary/10 shadow-sm opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300 flex items-center justify-center"
-                >
-                  <span className="material-symbols-outlined">face</span>
-                </button>
-              </div>
-              <div className="p-md flex flex-col flex-grow bg-surface-bright">
-                <div className="flex justify-between items-start mb-xs">
-                  <h3 className="font-headline-sm text-headline-sm text-on-surface">
-                    Lumina Clear
-                  </h3>
-                  <span className="font-label-md text-label-md text-primary font-bold">
-                    ₹3,800
-                  </span>
-                </div>
-                <p className="font-body-md text-body-md text-on-surface-variant mb-md flex-grow">
-                  Modern translucent frames protecting against digital strain.
-                </p>
-                <button className="w-full py-sm rounded-full bg-primary/5 text-primary border border-primary/20 font-label-md text-label-md hover:bg-primary hover:text-on-primary transition-colors duration-300">
-                  View Details
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="mt-md flex justify-center">
-            <button className="px-lg py-sm rounded-full border border-primary text-primary hover:bg-primary hover:text-on-primary font-label-md text-label-md transition-all duration-300 flex items-center space-x-xs">
-              <span>Load More Styles</span>
-              <span className="material-symbols-outlined text-[18px]">
-                expand_more
+            <div className="w-full md:w-auto relative group">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-c-muted group-focus-within:text-c-teal transition-colors">
+                search
               </span>
-            </button>
-          </div>
-        </section>
+              <input
+                className="w-full md:w-[280px] pl-12 pr-4 py-3 rounded-full bg-white border border-c-border focus:border-c-teal focus:ring-2 focus:ring-c-teal/20 transition-all font-body text-[0.9375rem] text-c-text placeholder:text-c-muted"
+                placeholder="Search brands or styles..."
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </section>
 
-        <section className="px-margin-mobile md:px-margin-desktop mb-lg">
-          <div className="bg-primary-fixed/10 rounded-xl p-lg md:p-lg flex flex-col md:flex-row items-center justify-between gap-lg relative overflow-hidden border border-primary/10">
-            <div className="absolute -top-1/2 -left-1/4 w-96 h-96 bg-primary-fixed rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+          {/* Product Grid */}
+          <section className="px-margin-mobile md:px-margin-desktop mb-space-2xl">
+            {filteredProducts.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
+                {filteredProducts.map(product => (
+                  <div key={product.id} className="product-card group flex flex-col bg-white rounded-xl border border-c-border hover:shadow-[0_20px_50px_rgba(11,110,115,0.08)] transition-all duration-300">
+                    <div className="relative w-full aspect-[4/3] bg-[#F4F7F7] overflow-hidden flex items-center justify-center p-8 rounded-t-xl">
+                      <div className="absolute top-4 left-4 z-10 bg-c-amber/15 text-c-amber font-mono text-[0.65rem] font-medium tracking-widest uppercase px-3 py-1.5 rounded-full">
+                        {product.badge}
+                      </div>
+                      <img
+                        alt={product.name}
+                        className="product-image w-full h-full object-contain transition-transform"
+                        src={product.image}
+                      />
+                    </div>
+                    <div className="p-8 flex flex-col flex-grow">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-display text-[1.5rem] font-semibold text-c-text">
+                          {product.name}
+                        </h3>
+                        <span className="font-display text-[1.25rem] text-c-teal font-semibold">
+                          {product.price}
+                        </span>
+                      </div>
+                      <p className="font-body text-[0.9375rem] text-c-muted mb-6 flex-grow leading-[1.6]">
+                        {product.description}
+                      </p>
+                      <div className="mt-auto">
+                        <a href="#details" className="inline-flex items-center text-c-text font-body text-[0.875rem] font-semibold uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 hover:after:w-full after:h-[2px] after:bg-c-accent after:transition-all after:duration-300">
+                          View Details <span className="material-symbols-outlined text-[16px] ml-1 text-c-accent">arrow_forward</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20 bg-white rounded-xl border border-c-border">
+                <span className="material-symbols-outlined text-[48px] text-c-muted mb-4">info</span>
+                <p className="font-body text-[1.1rem] text-c-text font-medium">No eyewear found matching your filter or query.</p>
+                <button onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }} className="mt-4 text-c-teal hover:underline font-body font-medium">Reset Filters</button>
+              </div>
+            )}
+            
+            <div className="mt-12 flex justify-center">
+              <button className="px-8 py-3 rounded-full border border-c-border text-c-text font-body font-medium text-[0.9375rem] hover:border-c-teal hover:text-c-teal transition-all duration-300 flex items-center space-x-2 bg-white">
+                <span>Load More Styles</span>
+                <span className="material-symbols-outlined text-[18px]">expand_more</span>
+              </button>
+            </div>
+          </section>
+        </div>
+
+        {/* Visit Boutique Banner */}
+        <section className="px-margin-mobile md:px-margin-desktop mb-space-lg">
+          <div className="bg-c-primary rounded-2xl p-10 md:p-14 flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden shadow-xl">
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-c-teal to-c-accent filter blur-[120px] opacity-30 rounded-full translate-x-1/3 -translate-y-1/3"></div>
+            
             <div className="relative z-10 w-full md:w-1/2">
-              <span className="flex items-center space-x-xs text-primary font-label-md text-label-md uppercase tracking-wider mb-sm">
-                <span className="material-symbols-outlined text-[20px]">
-                  location_on
-                </span>
+              <span className="flex items-center space-x-2 text-c-accent font-mono text-[0.75rem] uppercase tracking-[0.15em] mb-4">
+                <span className="material-symbols-outlined text-[18px]">location_on</span>
                 <span>Experience in Person</span>
               </span>
-              <h2 className="font-headline-md text-headline-md text-on-surface mb-md">
+              <h2 className="font-display text-[2.5rem] font-semibold text-white mb-4 leading-tight">
                 Visit our Tumsar Boutique
               </h2>
-              <p className="font-body-md text-body-md text-on-surface-variant mb-lg max-w-[400px]">
-                Get personalized styling advice, precise measurements, and try
-                on our exclusive collections in a comfortable, premium clinical
-                setting.
+              <p className="font-body text-[1.0625rem] text-white/80 mb-8 max-w-[450px] leading-[1.7]">
+                Get personalized styling advice, precise measurements, and try on our exclusive collections in a comfortable, premium clinical setting.
               </p>
-              <button className="px-lg py-sm bg-primary text-on-primary rounded-full font-label-md text-label-md hover:scale-105 transition-transform duration-300 shadow-sm shadow-primary/20">
-                Get Directions
+              <button className="btn-primary">
+                Get Directions <span className="material-symbols-outlined ml-1 text-[18px] align-middle">arrow_forward</span>
               </button>
             </div>
-            <div
-              className="relative z-10 w-full md:w-5/12 aspect-[4/3] rounded-lg overflow-hidden shadow-sm"
-              id="boutique-image-container"
-            >
+            
+            <div className="relative z-10 w-full md:w-5/12 aspect-[4/3] rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
               <img
                 alt="Jaiswal Eye Care Boutique Interior"
-                className="w-full h-[120%] object-cover -translate-y-[10%]"
-                data-alt="A bright, modern interior shot of a high-end optical boutique. The space features clean lines, white shelving, and minimalist wooden accents. Neatly arranged eyeglasses are displayed like artwork. The ambient lighting is warm and welcoming, while targeted spotlights illuminate the products. The overall aesthetic is a blend of a precise medical clinic and a luxury retail store, utilizing a calm color palette consistent with the Jaiswal Eye Care brand."
-                id="boutique-image"
+                className="w-full h-full object-cover"
                 src="https://lh3.googleusercontent.com/aida/AP1WRLv6HfMUv4hUE0mclBFeR3YJg4jIgXFOCcfmgsg7UoSPZx2yiecXw1brlpKCSdbsqMyakVmammUVwSbkEUc5YT_TAm6Dm6KCty2gyC35dKp-n35ClhMJVMds1-GWQTe00jGOgSgXn2DSiIia_S0HxJ-p7blwxKhgtIhkaKgQo-9iths1HUobEB3ZhzZOl_77-DUBYOCUNqZDOmciufsnyQsr4chUW3R34afit7YXx7YD1WLscMDQNpPvag"
               />
             </div>
           </div>
         </section>
+
       </div>
     </>
   );

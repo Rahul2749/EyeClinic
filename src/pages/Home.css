@@ -1,3 +1,20 @@
+/* Hero Grid responsive layout */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  min-height: 80vh;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 45fr 55fr;
+    gap: 0;
+    min-height: 92vh;
+  }
+}
+
 /* Hero Section */
 .hero-section {
   position: relative;
@@ -6,7 +23,7 @@
   align-items: center;
   overflow: hidden;
   padding-top: 80px; /* Offset for navbar */
-  background-color: var(--color-bg-alt);
+  background-color: var(--c-primary);
 }
 
 .hero-bg-shapes {
@@ -51,18 +68,6 @@
   max-width: 650px;
 }
 
-.hero-badge {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background-color: rgba(0, 163, 108, 0.1);
-  color: var(--color-secondary);
-  font-weight: 600;
-  border-radius: 50px;
-  margin-bottom: 1.5rem;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
 
 .hero-content h1 {
   font-size: 4rem;
