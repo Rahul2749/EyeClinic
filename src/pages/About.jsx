@@ -96,7 +96,7 @@ const About = () => {
                 </div>
 
                 <div className="form-group relative">
-                  <select className="form-input peer appearance-none bg-transparent" id="service" required defaultValue="">
+                  <select className="form-input peer appearance-none bg-transparent pr-12 cursor-pointer" id="service" required defaultValue="">
                     <option disabled value="" className="text-c-muted">Select a service...</option>
                     <option value="comprehensive" className="text-c-text">Comprehensive Eye Exam</option>
                     <option value="laser" className="text-c-text">Laser Vision Correction</option>
@@ -114,7 +114,7 @@ const About = () => {
                     <label className="form-label -translate-y-6 scale-75 text-c-teal bg-white px-1" htmlFor="date">Preferred Date</label>
                   </div>
                   <div className="form-group relative">
-                    <select className="form-input peer appearance-none bg-transparent" id="time" required defaultValue="">
+                    <select className="form-input peer appearance-none bg-transparent pr-12 cursor-pointer" id="time" required defaultValue="">
                       <option disabled value="" className="text-c-muted">Select time...</option>
                       <option value="morning" className="text-c-text">Morning (9 AM - 12 PM)</option>
                       <option value="afternoon" className="text-c-text">Afternoon (1 PM - 5 PM)</option>

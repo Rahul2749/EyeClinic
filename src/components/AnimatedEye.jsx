@@ -82,8 +82,8 @@ const AnimatedEye = () => {
   }, []);
 
   return (
-    <div className="w-full h-full flex items-center justify-center relative z-20" ref={eyeRef}>
-      <svg viewBox="0 0 200 200" className="w-[90%] max-w-[450px] overflow-visible drop-shadow-[0_30px_60px_rgba(0,201,167,0.3)]">
+    <div className="animated-eye-layer w-full h-full flex items-center justify-center relative z-20" ref={eyeRef}>
+      <svg viewBox="0 0 200 200" className="w-[90%] max-w-[450px] overflow-visible">
         <defs>
           <radialGradient id="scleraGrad" cx="50%" cy="50%" r="50%">
             <stop offset="40%" stopColor="#ffffff" />
@@ -128,7 +128,7 @@ const AnimatedEye = () => {
         {/* Rotating background rings */}
         <g ref={ring1Ref}>
           <circle cx="100" cy="100" r="86" fill="none" stroke="#00C9A7" strokeWidth="1.5" strokeDasharray="4 14" opacity="0.6" />
-          <circle cx="100" cy="100" r="86" fill="none" stroke="#00C9A7" strokeWidth="4" strokeDasharray="1 40" opacity="0.9" filter="url(#glow)" />
+          <circle cx="100" cy="100" r="86" fill="none" stroke="#00C9A7" strokeWidth="4" strokeDasharray="1 40" opacity="0.9" />
         </g>
         <g ref={ring2Ref}>
           <circle cx="100" cy="100" r="93" fill="none" stroke="#E8A045" strokeWidth="1" strokeDasharray="2 10" opacity="0.4" />

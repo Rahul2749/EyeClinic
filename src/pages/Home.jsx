@@ -73,7 +73,7 @@ const Home = () => {
               </div>
 
               <div className="hero-image relative h-[300px] md:h-[450px] flex items-center justify-center z-10 md:translate-x-[5%] md:-translate-y-[2%]">
-                <div className="w-full h-full absolute top-0 left-0 bg-c-teal/10 blur-[100px] rounded-full pointer-events-none scale-150" />
+                <div className="hero-glow w-full h-full absolute top-0 left-0 bg-c-teal/10 blur-[100px] rounded-full pointer-events-none scale-150" />
                 <Suspense fallback={<div className="w-full h-full animate-pulse rounded-full bg-c-teal/10" />}>
                   <AnimatedEye />
                 </Suspense>
@@ -81,7 +81,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="relative w-full bg-c-primary/40 backdrop-blur-[10px] border-t border-c-white/10 z-20">
+          <div className="relative w-full bg-c-primary/60 border-t border-c-white/10 z-20">
             <div className="max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-6">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
                 <div className="hero-stat-item flex items-center gap-4">

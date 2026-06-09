@@ -1,15 +1,56 @@
 .preloader-container {
-  will-change: transform, opacity;
+  /* Compositor-driven curtain exit, independent of the busy main thread */
+  transform: translateY(0);
+  transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
+}
+
+.preloader-container.is-exiting {
+  transform: translateY(-100%);
 }
 
 .preloader-text-char {
   display: inline-block;
   opacity: 0;
+  transform: translateY(110%);
+  animation: preloaderReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   will-change: transform, opacity;
 }
 
 .preloader-line {
   transform-origin: left center;
   transform: scaleX(0);
+  animation: preloaderFill 1s cubic-bezier(0.65, 0, 0.35, 1) 0.4s forwards;
   will-change: transform;
+}
+
+@keyframes preloaderReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes preloaderFill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader-container {
+    transition: opacity 0.4s ease-out;
+  }
+
+  .preloader-container.is-exiting {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  .preloader-text-char,
+  .preloader-line {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }

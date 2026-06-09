@@ -6,6 +6,18 @@
   align-items: center;
 }
 
+/* Promote heavy hero visuals to their own GPU layers so page scrolling
+   composites them instead of repainting blurs/SVG filters every frame. */
+.animated-eye-layer {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.hero-glow {
+  will-change: transform;
+}
+
 @media (min-width: 768px) {
   .hero-grid {
     grid-template-columns: 45fr 55fr;

@@ -80,19 +80,37 @@
   
   .form-input {
     width: 100%;
+    min-height: 3.5rem;
     border: 1.5px solid var(--c-border);
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 14px 16px;
     font-size: 1rem;
+    color: var(--c-text);
+    background-color: #fff;
     transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-input:hover:not(:focus) {
+    border-color: var(--c-muted);
   }
   .form-input:focus {
     border-color: var(--c-teal);
     box-shadow: 0 0 0 3px rgba(11, 110, 115, 0.15);
     outline: none;
   }
+  /* Keep the native date control readable and on-brand */
+  .form-input[type="date"] {
+    color: var(--c-text);
+  }
+  .form-input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.55;
+    transition: opacity 0.2s;
+  }
+  .form-input[type="date"]:hover::-webkit-calendar-picker-indicator {
+    opacity: 0.9;
+  }
   .form-label {
-    @apply absolute text-c-muted bg-white px-1 duration-300 transform -translate-y-6 scale-75 top-3 z-10 origin-[0] left-3 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6;
+    @apply absolute text-c-muted bg-white px-1 duration-300 transform -translate-y-6 scale-75 top-3 z-10 origin-[0] left-3 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-c-teal;
   }
   
   .material-symbols-outlined {
@@ -123,9 +141,6 @@ html.lenis body {
 }
 
 /* Scroll-aware header shrink (toggled by GSAP ScrollTrigger) */
-#main-header {
-  will-change: padding, background-color;
-}
 #main-header.header-scrolled > div {
   padding-top: 0.6rem;
   padding-bottom: 0.6rem;
