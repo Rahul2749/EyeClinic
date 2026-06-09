@@ -50,32 +50,95 @@ const AnimatedEye = () => {
 
     const startTimer = setTimeout(startContinuous, 2400);
 
-    // Pupil tracking is cheap (only fires while the mouse moves), so it can run
-    // right away. quickTo avoids spawning a tween per event.
+    // quickTo avoids spawning a tween per pointer event.
     const moveX = gsap.quickTo(pupilRef.current, "x", { duration: 0.6, ease: "power2.out" });
     const moveY = gsap.quickTo(pupilRef.current, "y", { duration: 0.6, ease: "power2.out" });
 
+    const updatePupilFromPoint = (clientX, clientY) => {
+      if (!eyeRef.current) return;
+      const rect = eyeRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      moveX(gsap.utils.clamp(-20, 20, (clientX - centerX) * 0.06));
+      moveY(gsap.utils.clamp(-15, 15, (clientY - centerY) * 0.06));
+    };
+
     let frame = 0;
-    const handleMouseMove = (e) => {
-      if (frame) return; // throttle to one update per animation frame
+    const schedulePupilUpdate = (clientX, clientY) => {
+      if (frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
-        if (!eyeRef.current) return;
-        const rect = eyeRef.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        moveX(gsap.utils.clamp(-20, 20, (e.clientX - centerX) * 0.06));
-        moveY(gsap.utils.clamp(-15, 15, (e.clientY - centerY) * 0.06));
+        updatePupilFromPoint(clientX, clientY);
       });
+    };
+
+    const handleMouseMove = (e) => schedulePupilUpdate(e.clientX, e.clientY);
+
+    const isTouchPrimary = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    let idleTween = null;
+    let idleResumeTimer = null;
+    let idleStartTimer = null;
+
+    const stopIdlePupil = () => {
+      idleTween?.kill();
+      idleTween = null;
+      clearTimeout(idleResumeTimer);
+    };
+
+    const startIdlePupil = () => {
+      if (!pupilRef.current) return;
+      stopIdlePupil();
+      idleTween = gsap.fromTo(
+        pupilRef.current,
+        { x: -10, y: 2 },
+        { x: 10, y: -5, duration: 2.8, yoyo: true, repeat: -1, ease: "sine.inOut", overwrite: "auto" },
+      );
+    };
+
+    const scheduleIdleResume = () => {
+      clearTimeout(idleResumeTimer);
+      idleResumeTimer = setTimeout(() => {
+        gsap.to(pupilRef.current, {
+          x: 0,
+          y: 0,
+          duration: 0.7,
+          ease: "power2.out",
+          overwrite: "auto",
+          onComplete: startIdlePupil,
+        });
+      }, 1500);
+    };
+
+    const handleTouchStart = (e) => {
+      stopIdlePupil();
+      const touch = e.touches[0];
+      if (touch) schedulePupilUpdate(touch.clientX, touch.clientY);
+    };
+
+    const handleTouchMove = (e) => {
+      const touch = e.touches[0];
+      if (touch) schedulePupilUpdate(touch.clientX, touch.clientY);
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
+    if (isTouchPrimary) {
+      window.addEventListener("touchstart", handleTouchStart, { passive: true });
+      window.addEventListener("touchmove", handleTouchMove, { passive: true });
+      window.addEventListener("touchend", scheduleIdleResume, { passive: true });
+      idleStartTimer = setTimeout(startIdlePupil, 2800);
+    }
+
     return () => {
       clearTimeout(startTimer);
+      clearTimeout(idleStartTimer);
+      stopIdlePupil();
       gsap.killTweensOf(blink);
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", scheduleIdleResume);
       ctx?.revert();
     };
   }, []);

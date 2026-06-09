@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLenis, scrollToElement } from "../context/smoothScroll";
 import { useScrollSpy } from "../hooks/useScrollSpy";
@@ -43,15 +44,41 @@ const Navbar = () => {
       return;
     }
 
+    setIsMobileMenuOpen(false);
     scrollToElement(lenisRef, document.getElementById(sectionId));
   };
 
+  const mobileMenu = isMobileMenuOpen
+    ? createPortal(
+        <div
+          className="md:hidden fixed inset-0 z-[200] bg-c-primary flex flex-col pt-24 px-margin-mobile pb-10 overflow-y-auto"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
+        >
+          <nav className="flex flex-col gap-6 mt-4">
+            <a className={activeSection === 'home' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#home" onClick={(e) => { handleNavClick(e, 'home'); }}>Home</a>
+            <a className={activeSection === 'products' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#products" onClick={(e) => { handleNavClick(e, 'products'); }}>Optical Shop</a>
+            <a className={activeSection === 'services' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#services" onClick={(e) => { handleNavClick(e, 'services'); }}>Services</a>
+            <a className={activeSection === 'about' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#about" onClick={(e) => { handleNavClick(e, 'about'); }}>Appointments</a>
+          </nav>
+          <div className="mt-auto pt-10">
+            <button onClick={() => { window.dispatchEvent(new Event('open-booking-modal')); setIsMobileMenuOpen(false); }} className="btn-primary w-full text-center py-4 text-[16px]">
+              Book Consultation
+            </button>
+          </div>
+        </div>,
+        document.body,
+      )
+    : null;
+
   return (
+    <>
     <header
-      className="fixed top-0 w-full z-50 bg-c-primary/95 backdrop-blur-md border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.15)] transition-colors duration-300"
+      className={`fixed top-0 w-full border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.15)] transition-colors duration-300 ${isMobileMenuOpen ? "z-[210] bg-c-primary" : "z-50 bg-c-primary/95 backdrop-blur-md"}`}
       id="main-header"
     >
-      <div className="relative z-[110] flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+      <div className="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
         <div className="flex items-center gap-4">
           <img
             alt="Jaiswal Eye Care Center Logo"
@@ -72,34 +99,20 @@ const Navbar = () => {
           <button onClick={() => window.dispatchEvent(new Event('open-booking-modal'))} className="btn-primary hidden md:inline-flex">
             Book Consultation
           </button>
-          <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <button
+            type="button"
+            className="md:hidden relative z-[1] text-white p-1 -mr-1"
+            aria-expanded={isMobileMenuOpen}
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setIsMobileMenuOpen((open) => !open)}
+          >
             <span className="material-symbols-outlined text-3xl">{isMobileMenuOpen ? 'close' : 'menu'}</span>
           </button>
         </div>
       </div>
-
-      {/* Mobile Menu — full-screen solid overlay so page content cannot bleed through */}
-      {isMobileMenuOpen && (
-        <div
-          className="md:hidden fixed inset-0 z-[100] bg-c-primary flex flex-col pt-24 px-margin-mobile pb-10 overflow-y-auto"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Mobile navigation"
-        >
-          <nav className="flex flex-col gap-6 mt-4">
-            <a className={activeSection === 'home' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#home" onClick={(e) => { handleNavClick(e, 'home'); setIsMobileMenuOpen(false); }}>Home</a>
-            <a className={activeSection === 'products' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#products" onClick={(e) => { handleNavClick(e, 'products'); setIsMobileMenuOpen(false); }}>Optical Shop</a>
-            <a className={activeSection === 'services' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#services" onClick={(e) => { handleNavClick(e, 'services'); setIsMobileMenuOpen(false); }}>Services</a>
-            <a className={activeSection === 'about' ? `font-body text-[18px] font-medium text-white` : `font-body text-[18px] font-medium text-white/70`} href="#about" onClick={(e) => { handleNavClick(e, 'about'); setIsMobileMenuOpen(false); }}>Appointments</a>
-          </nav>
-          <div className="mt-auto pt-10">
-            <button onClick={() => { window.dispatchEvent(new Event('open-booking-modal')); setIsMobileMenuOpen(false); }} className="btn-primary w-full text-center py-4 text-[16px]">
-              Book Consultation
-            </button>
-          </div>
-        </div>
-      )}
     </header>
+    {mobileMenu}
+    </>
   );
 };
 
