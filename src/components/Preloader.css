@@ -1,35 +1,15 @@
 .preloader-container {
-  animation: fadeOut 0.6s ease-in-out 1.6s forwards;
+  will-change: transform, opacity;
 }
 
 .preloader-text-char {
+  display: inline-block;
   opacity: 0;
-  transform: translateY(2rem);
-  animation: revealChar 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform, opacity;
 }
 
 .preloader-line {
-  transform-origin: left;
+  transform-origin: left center;
   transform: scaleX(0);
-  animation: fillLine 1s cubic-bezier(0.8, 0, 0.2, 1) 0.6s forwards;
-}
-
-@keyframes revealChar {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fillLine {
-  to {
-    transform: scaleX(1);
-  }
-}
-
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
+  will-change: transform;
 }

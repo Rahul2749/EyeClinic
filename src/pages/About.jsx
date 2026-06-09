@@ -1,44 +1,28 @@
-import React, { useEffect } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect } from "react";
+import { gsap, revealFromBottom } from "../lib/gsap";
 import "./About.css";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
   useEffect(() => {
-    let ctx = gsap.context(() => {
-      // Form fields staggered reveal
-      gsap.fromTo(".form-group", 
-        { y: 20, opacity: 0 },
-        {
-          scrollTrigger: {
-            trigger: "#appointment-form",
-            start: "top 80%",
-          },
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          clearProps: "all"
-        }
-      );
+    const ctx = gsap.context(() => {
+      revealFromBottom(".form-group", {
+        trigger: "#appointment-form",
+        start: "top 80%",
+        stagger: 0.1,
+        duration: 0.6,
+      });
 
-      // Clinic info card slide in
-      gsap.fromTo("#clinic-info-card", 
+      gsap.fromTo(
+        "#clinic-info-card",
         { x: 40, opacity: 0 },
         {
-          scrollTrigger: {
-            trigger: "#clinic-info-card",
-            start: "top 80%",
-          },
+          scrollTrigger: { trigger: "#clinic-info-card", start: "top 80%" },
           x: 0,
           opacity: 1,
           duration: 0.8,
           ease: "power3.out",
-          clearProps: "all"
-        }
+          clearProps: "all",
+        },
       );
 
       // FAQ accordion
@@ -224,7 +208,15 @@ const About = () => {
                 <img
                   alt="Map location"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  src="https://lh3.googleusercontent.com/aida/AP1WRLtfAa58SOen8Lzxs5gdDzpHlwHB7e5_CiEJ9FZDF3XseG7-aB36TXM-cdkNWDcUPBZw16xoslj59WPV90GEr4HRxpiHjllbz70EnWNIRUUB2mUzzlY0yWtMvQ2LsZ3bZiLGBs9py7Z-yAsJdkti-MhppPjqCajdwBv1c7-2pIaY8C1n3a14NeM14RNnedJ_rbGAeT7oG1aolZkL9d8YBEmpPQT20pgM66aoBSqBFJ-PhnJSXTfpIjWPhDY"
+                  loading="lazy"
+                  src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1000&q=80"
+                  onError={(e) => {
+                    const fallback =
+                      "https://placehold.co/1000x560/F4F7F7/0B6E73?font=montserrat&text=Map";
+                    if (e.currentTarget.src !== fallback) {
+                      e.currentTarget.src = fallback;
+                    }
+                  }}
                 />
                 
                 <div className="absolute bottom-4 left-4 right-4 flex justify-center z-20">

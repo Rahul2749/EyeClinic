@@ -1,84 +1,35 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useLenis, scrollToElement } from "../context/smoothScroll";
+import { useScrollSpy } from "../hooks/useScrollSpy";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isClicking = useRef(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const lenisRef = useLenis();
+  const activeSection = useScrollSpy(location.pathname !== "/");
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (isClicking.current) return; // Skip spy while smooth scrolling from click
-
-      const sections = ['home', 'services', 'products', 'about'];
-      let current = '';
-
-      // Check if we're at the bottom of the page
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
-        setActiveSection('about');
-        return;
-      }
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i]);
-        // 200px offset to trigger a bit earlier when scrolling down
-        if (section && window.scrollY >= section.offsetTop - 200) {
-          current = sections[i];
-          break;
-        }
-      }
-
-      if (current) {
-        setActiveSection(current);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (location.pathname === '/' && location.hash) {
-      const id = location.hash.replace('#', '');
-      const element = document.getElementById(id);
-      if (element) {
-        const timer = setTimeout(() => {
-          isClicking.current = true;
-          setActiveSection(id);
-          element.scrollIntoView({ behavior: 'smooth' });
-          setTimeout(() => {
-            isClicking.current = false;
-          }, 1200);
-        }, 300);
-        return () => clearTimeout(timer);
-      }
+    if (location.pathname === "/" && location.hash) {
+      const id = location.hash.replace("#", "");
+      const timer = setTimeout(() => {
+        scrollToElement(lenisRef, document.getElementById(id));
+      }, 300);
+      return () => clearTimeout(timer);
     }
-  }, [location.pathname, location.hash]);
+  }, [location.pathname, location.hash, lenisRef]);
 
   const handleNavClick = (e, sectionId) => {
     e.preventDefault();
-    isClicking.current = true;
-    setActiveSection(sectionId);
 
-    if (location.pathname !== '/') {
+    if (location.pathname !== "/") {
       navigate(`/#${sectionId}`);
       return;
     }
 
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Re-enable scroll spy after smooth scroll finishes (1200ms is safer for long scrolls)
-    setTimeout(() => {
-      isClicking.current = false;
-    }, 1200);
+    scrollToElement(lenisRef, document.getElementById(sectionId));
   };
 
   return (

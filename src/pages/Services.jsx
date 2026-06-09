@@ -1,48 +1,21 @@
-import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect } from "react";
+import { gsap, revealHeading, revealFromBottom } from "../lib/gsap";
 import "./Services.css";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Services = () => {
   useEffect(() => {
-    let ctx = gsap.context(() => {
-      // Section Heading Clip Reveal
-      gsap.utils.toArray('.section-heading').forEach(heading => {
-        gsap.fromTo(heading, 
-          { clipPath: 'inset(100% 0 0 0)', y: 30 },
-          {
-            scrollTrigger: { trigger: heading, start: 'top 85%' },
-            clipPath: 'inset(0% 0 0 0)',
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            clearProps: 'all'
-          }
-        );
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray(".section-heading").forEach((heading) => {
+        revealHeading(heading);
       });
 
-      // Service Cards Stagger
-      gsap.fromTo('.service-card', 
-        { y: 60, opacity: 0 },
-        {
-          scrollTrigger: {
-            trigger: '.services-section',
-            start: 'top 75%',
-            end: 'bottom 25%',
-            toggleActions: 'play none none reverse'
-          },
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          stagger: { amount: 0.6, from: 'start' },
-          ease: 'power2.out',
-          clearProps: 'all'
-        }
-      );
+      revealFromBottom(".service-card", {
+        trigger: ".services-section",
+        start: "top 78%",
+        stagger: 0.12,
+      });
     });
+
     return () => ctx.revert();
   }, []);
 

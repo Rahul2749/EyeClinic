@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
 const AnimatedEye = () => {
@@ -14,38 +14,31 @@ const AnimatedEye = () => {
   const closedPath = "M 15 100 Q 100 100 185 100 Q 100 100 15 100 Z";
 
   useEffect(() => {
-    // Rotating tech rings
-    gsap.to(ring1Ref.current, { rotation: 360, duration: 24, repeat: -1, ease: "linear", transformOrigin: "50% 50%" });
-    gsap.to(ring2Ref.current, { rotation: -360, duration: 30, repeat: -1, ease: "linear", transformOrigin: "50% 50%" });
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
-    // Floating animation for the whole eye
-    gsap.to(eyeRef.current, { y: -12, duration: 3.5, yoyo: true, repeat: -1, ease: "sine.inOut" });
+    const ctx = gsap.context(() => {
+      // Rotating tech rings
+      gsap.to(ring1Ref.current, { rotation: 360, duration: 24, repeat: -1, ease: "none", transformOrigin: "50% 50%" });
+      gsap.to(ring2Ref.current, { rotation: -360, duration: 30, repeat: -1, ease: "none", transformOrigin: "50% 50%" });
+
+      // Floating animation for the whole eye
+      gsap.to(eyeRef.current, { y: -12, duration: 3.5, yoyo: true, repeat: -1, ease: "sine.inOut" });
+    });
+
+    const lids = [clipPathRef.current, outlineRef.current, glowOutlineRef.current];
 
     // Organic blinking animation
     const blink = () => {
       const tl = gsap.timeline();
-      tl.to([clipPathRef.current, outlineRef.current, glowOutlineRef.current], {
-        attr: { d: closedPath },
-        duration: 0.12,
-        ease: "power2.in"
-      }).to([clipPathRef.current, outlineRef.current, glowOutlineRef.current], {
-        attr: { d: openPath },
-        duration: 0.18,
-        ease: "power2.out"
-      });
+      tl.to(lids, { attr: { d: closedPath }, duration: 0.12, ease: "power2.in" })
+        .to(lids, { attr: { d: openPath }, duration: 0.18, ease: "power2.out" });
 
       // Occasional double blink
       if (Math.random() > 0.6) {
-        tl.to([clipPathRef.current, outlineRef.current, glowOutlineRef.current], {
-          attr: { d: closedPath },
-          duration: 0.12,
-          ease: "power2.in",
-          delay: 0.08
-        }).to([clipPathRef.current, outlineRef.current, glowOutlineRef.current], {
-          attr: { d: openPath },
-          duration: 0.18,
-          ease: "power2.out"
-        });
+        tl.to(lids, { attr: { d: closedPath }, duration: 0.12, ease: "power2.in", delay: 0.08 })
+          .to(lids, { attr: { d: openPath }, duration: 0.18, ease: "power2.out" });
       }
 
       gsap.delayedCall(gsap.utils.random(2.5, 6), blink);
@@ -53,29 +46,38 @@ const AnimatedEye = () => {
 
     gsap.delayedCall(1, blink);
 
-    // Mouse tracking for pupil
-    const handleMouseMove = (e) => {
-      if (!eyeRef.current) return;
-      const rect = eyeRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      
-      const moveX = (e.clientX - centerX) * 0.06;
-      const moveY = (e.clientY - centerY) * 0.06;
+    if (prefersReducedMotion) {
+      return () => {
+        gsap.killTweensOf(blink);
+        ctx.revert();
+      };
+    }
 
-      gsap.to(pupilRef.current, {
-        x: Math.max(-20, Math.min(20, moveX)),
-        y: Math.max(-15, Math.min(15, moveY)),
-        duration: 0.6,
-        ease: "power2.out"
+    // Mouse tracking for pupil — quickTo avoids spawning a tween per event
+    const moveX = gsap.quickTo(pupilRef.current, "x", { duration: 0.6, ease: "power2.out" });
+    const moveY = gsap.quickTo(pupilRef.current, "y", { duration: 0.6, ease: "power2.out" });
+
+    let frame = 0;
+    const handleMouseMove = (e) => {
+      if (frame) return; // throttle to one update per animation frame
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        if (!eyeRef.current) return;
+        const rect = eyeRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        moveX(gsap.utils.clamp(-20, 20, (e.clientX - centerX) * 0.06));
+        moveY(gsap.utils.clamp(-15, 15, (e.clientY - centerY) * 0.06));
       });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     return () => {
       gsap.killTweensOf(blink);
-      window.removeEventListener('mousemove', handleMouseMove);
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("mousemove", handleMouseMove);
+      ctx.revert();
     };
   }, []);
 

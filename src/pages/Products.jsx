@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useState, useEffect } from "react";
+import { gsap, revealFromBottom } from "../lib/gsap";
+import { useProductCardTilt } from "../hooks/useProductCardTilt";
 import "./Products.css";
 
-gsap.registerPlugin(ScrollTrigger);
+const FALLBACK_IMAGE =
+  "https://placehold.co/600x450/F4F7F7/0B6E73?font=montserrat&text=Eyewear";
 
 const PRODUCTS_DATA = [
   {
@@ -14,7 +14,8 @@ const PRODUCTS_DATA = [
     description: "Ultra-lightweight titanium frame for all-day comfort.",
     category: "Frames",
     badge: "Titanium",
-    image: "https://lh3.googleusercontent.com/aida/AP1WRLuVCPwBR5mBRrbap3LGAsUdjwEu1NEfUpPs1kaCNWkPSaO3CrZ2Lu-B6UoEuMoK1v_pRwqqDj7dAIMH5vyU9HxXv8NpWFS5j9ShnOG-1bRfem-NvDlNj5YBWQ6e83ABDpL-pQgSb8ArMifk2fHsf2vLnbIDCF1jCjLAeorw2ENpi6Tj6mloATo-Un5Wx6AGA3UGYtzHW3GUFlBBuAumtCVJ8Ul7VYR67PSJAZIaUGgRvSJfNNf1t8zyuic"
+    image:
+      "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?auto=format&fit=crop&w=800&q=80"
   },
   {
     id: 2,
@@ -23,7 +24,8 @@ const PRODUCTS_DATA = [
     description: "Classic tortoise shell with polarized UV400 lenses.",
     category: "Sunglasses",
     badge: "Acetate",
-    image: "https://lh3.googleusercontent.com/aida/AP1WRLtx5m5SVWn_6eMff9JeWGVCsACII63qAVgGK6Jg4AOjiJg9pqRCyUU06jS2oC8pJ4v7z0DlwIDITulObQWVOsFthXTiLlLpgLuuo8AiNLSI4hQkTDGfoFV6kHfnyNhq1SuuuVC_7fSz5O88t6oiWSKz5lNUKL93qF7LG4AADmu_DXltir1KlS-AWRYIL1bU8AWP9hnGvMylWbJJT-BUOp3-5-SZhf0almRwKD7DUT8WaCOLEuA49Tt1BPY"
+    image:
+      "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80"
   },
   {
     id: 3,
@@ -32,7 +34,8 @@ const PRODUCTS_DATA = [
     description: "Modern translucent frames protecting against digital strain.",
     category: "Eyeglasses",
     badge: "Blue-Light Block",
-    image: "https://lh3.googleusercontent.com/aida/AP1WRLsZNM9y4SVzLQJj_0ApDwdxukovM89uDI4fbCMg3I9TgzifJZwJNDw5CSncdx2LwPWas8W9eyVpjox_fQKuW8hdKMlXqKieqIOhCJMsqt5bfdlXQ7iPJVAgCbBMYx0hJdaqEvb4WMygILTvUr44fBsd0ydrMXpd_-XYqQ3v54xdicqK3mEgp-sEzAE08p45XKTnyYKkHytX5XRUz0rW5fduyRQ3Q-MVQY9FoiaBbF61FxXHaYHy7gNMhYs"
+    image:
+      "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&w=800&q=80"
   },
   {
     id: 4,
@@ -41,7 +44,8 @@ const PRODUCTS_DATA = [
     description: "Ultra-hydrating daily contact lenses for dry eyes.",
     category: "Contact Lenses",
     badge: "Daily Hydrogel",
-    image: "https://lh3.googleusercontent.com/aida/AP1WRLsZNM9y4SVzLQJj_0ApDwdxukovM89uDI4fbCMg3I9TgzifJZwJNDw5CSncdx2LwPWas8W9eyVpjox_fQKuW8hdKMlXqKieqIOhCJMsqt5bfdlXQ7iPJVAgCbBMYx0hJdaqEvb4WMygILTvUr44fBsd0ydrMXpd_-XYqQ3v54xdicqK3mEgp-sEzAE08p45XKTnyYKkHytX5XRUz0rW5fduyRQ3Q-MVQY9FoiaBbF61FxXHaYHy7gNMhYs"
+    image:
+      "https://images.unsplash.com/photo-1606318801954-d2d7c4a3a45e?auto=format&fit=crop&w=800&q=80"
   }
 ];
 
@@ -50,68 +54,17 @@ const Products = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    let ctx = gsap.context(() => {
-      // Stagger product cards
-      gsap.fromTo(".product-card", 
-        { y: 60, opacity: 0 },
-        {
-          scrollTrigger: {
-            trigger: "#product-grid",
-            start: "top 80%",
-          },
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "power3.out",
-          clearProps: "all"
-        }
-      );
-
-      // 3D Magnetic Tilt for Product Cards
-      const cards = document.querySelectorAll('.product-card');
-      cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-          const rect = card.getBoundingClientRect();
-          const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
-          const y = ((e.clientY - rect.top) / rect.height - 0.5) * 12;
-
-          gsap.to(card, {
-            rotateX: -y, rotateY: x,
-            transformPerspective: 800,
-            duration: 0.4, ease: 'power1.out'
-          });
-          
-          // Image zoom spring
-          const img = card.querySelector('.product-image');
-          if (img) {
-            gsap.to(img, {
-              scale: 1.08,
-              duration: 0.6,
-              ease: 'back.out(1.5)'
-            });
-          }
-        });
-
-        card.addEventListener('mouseleave', () => {
-          gsap.to(card, {
-            rotateX: 0, rotateY: 0,
-            duration: 0.6, ease: 'elastic.out(1, 0.5)'
-          });
-          
-          const img = card.querySelector('.product-image');
-          if (img) {
-            gsap.to(img, {
-              scale: 1,
-              duration: 0.6,
-              ease: 'power2.out'
-            });
-          }
-        });
+    const ctx = gsap.context(() => {
+      revealFromBottom(".product-card", {
+        trigger: "#product-grid",
+        start: "top 80%",
+        stagger: 0.1,
       });
     });
     return () => ctx.revert();
-  }, [selectedCategory, searchQuery]); // Re-register animations when content filters
+  }, [selectedCategory, searchQuery]); // Re-register reveal when filtered content changes
+
+  useProductCardTilt("#product-grid", [selectedCategory, searchQuery]);
 
   const categories = ["All", "Sunglasses", "Eyeglasses", "Frames", "Contact Lenses"];
 
@@ -177,6 +130,12 @@ const Products = () => {
                         alt={product.name}
                         className="product-image w-full h-full object-contain transition-transform"
                         src={product.image}
+                        loading="lazy"
+                        onError={(e) => {
+                          if (e.currentTarget.src !== FALLBACK_IMAGE) {
+                            e.currentTarget.src = FALLBACK_IMAGE;
+                          }
+                        }}
                       />
                     </div>
                     <div className="p-8 flex flex-col flex-grow">
@@ -242,7 +201,13 @@ const Products = () => {
               <img
                 alt="Jaiswal Eye Care Boutique Interior"
                 className="w-full h-full object-cover"
-                src="https://lh3.googleusercontent.com/aida/AP1WRLv6HfMUv4hUE0mclBFeR3YJg4jIgXFOCcfmgsg7UoSPZx2yiecXw1brlpKCSdbsqMyakVmammUVwSbkEUc5YT_TAm6Dm6KCty2gyC35dKp-n35ClhMJVMds1-GWQTe00jGOgSgXn2DSiIia_S0HxJ-p7blwxKhgtIhkaKgQo-9iths1HUobEB3ZhzZOl_77-DUBYOCUNqZDOmciufsnyQsr4chUW3R34afit7YXx7YD1WLscMDQNpPvag"
+                loading="lazy"
+                src="https://images.unsplash.com/photo-1556015048-4d3aa10df74c?auto=format&fit=crop&w=1000&q=80"
+                onError={(e) => {
+                  if (e.currentTarget.src !== FALLBACK_IMAGE) {
+                    e.currentTarget.src = FALLBACK_IMAGE;
+                  }
+                }}
               />
             </div>
           </div>
